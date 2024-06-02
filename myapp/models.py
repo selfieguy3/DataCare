@@ -12,8 +12,7 @@ class Person(models.Model):
         ('child', 'Child'),
         ('parent', 'Parent')
     ]
-    Person_Type = models.CharField(max_length=10, choices=PERSON_TYPE, default='staff')
-# default is staff~
+    Person_Type = models.CharField(max_length=10, choices=PERSON_TYPE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.P_FName} {self.P_LName}"
@@ -65,3 +64,117 @@ class ChildStaff(models.Model):
 
     def __str__(self):
         return f"Staff ID: {self.STAFF_ID}, Child ID: {self.CHILD_ID}"
+
+class Attendance(models.Model):
+    CHILD_ID = models.ForeignKey(Child, on_delete=models.CASCADE)
+    IS_ATTEND = models.BooleanField()
+    Attendance_Date = models.DateField()
+
+    def __str__(self):
+        return f"Attendance for Child ID: {self.CHILD_ID} on {self.Attendance_Date}"
+
+class Activity(models.Model):
+    ACTIVITY_ID = models.AutoField(primary_key=True)
+    ACTIVITY_NAME = models.CharField(max_length=100)
+    Description = models.TextField()
+    Duration = models.DurationField()
+    Cost = models.DecimalField(max_digits=10, decimal_places=2)
+    Age_Group = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"Activity: {self.ACTIVITY_NAME}"
+
+class ChildActivity(models.Model):
+    CHILD_ID = models.ForeignKey(Child, on_delete=models.CASCADE)
+    ACTIVITY_ID = models.ForeignKey(Activity, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Child ID: {self.CHILD_ID}, Activity ID: {self.ACTIVITY_ID}"
+
+class ActivityStaff(models.Model):
+    STAFF_ID = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    ACTIVITY_ID = models.ForeignKey(Activity, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Staff ID: {self.STAFF_ID}, Activity ID: {self.ACTIVITY_ID}"
+
+class HealthRecord(models.Model):
+    HEALTH_RECORD_ID = models.AutoField(primary_key=True)
+    CHILD_ID = models.ForeignKey(Child, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Health Record ID: {self.HEALTH_RECORD_ID}"
+
+class Allergy(models.Model):
+    ALLERGY_ID = models.AutoField(primary_key=True)
+    ALLERGY_NAME = models.CharField(max_length=100)
+    Description = models.TextField()
+
+    def __str__(self):
+        return f"Allergy: {self.ALLERGY_NAME}"
+
+class HealthRecordAllergy(models.Model):
+    HEALTH_RECORD_ID = models.ForeignKey(HealthRecord, on_delete=models.CASCADE)
+    ALLERGY_ID = models.ForeignKey(Allergy, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Health Record ID: {self.HEALTH_RECORD_ID}, Allergy ID: {self.ALLERGY_ID}"
+
+class Vaccine(models.Model):
+    VACCINE_ID = models.AutoField(primary_key=True)
+    VACCINE_NAME = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"Vaccine: {self.VACCINE_NAME}"
+
+class HealthRecordVaccine(models.Model):
+    HEALTH_RECORD_ID = models.ForeignKey(HealthRecord, on_delete=models.CASCADE)
+    VACCINE_ID = models.ForeignKey(Vaccine, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Health Record ID: {self.HEALTH_RECORD_ID}, Vaccine ID: {self.VACCINE_ID}"
+
+class Payment(models.Model):
+    PAYMENT_ID = models.AutoField(primary_key=True)
+    PARENT_ID = models.ForeignKey(Parent, on_delete=models.CASCADE)
+    Paid_Amount = models.DecimalField(max_digits=10, decimal_places=2)
+    Payment_Method = models.CharField(max_length=50)
+    Payment_Date = models.DateField()
+
+    def __str__(self):
+        return f"Payment ID: {self.PAYMENT_ID}, Parent ID: {self.PARENT_ID}"
+
+class Expense(models.Model):
+    EXPENSE_ID = models.AutoField(primary_key=True)
+    CHILD_ID = models.ForeignKey(Child, on_delete=models.CASCADE)
+    ACTIVITY_ID = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    OTHER_EXPENSE_D = models.IntegerField()
+    EXPENSE_DATE = models.DateField()
+    Amount = models.DecimalField(max_digits=10, decimal_places=2)
+    Description = models.TextField()
+
+    def __str__(self):
+        return f"Expense ID: {self.EXPENSE_ID}, Child ID: {self.CHILD_ID}"
+
+class OtherExpense(models.Model):
+    OTHER_EXPENSE_D = models.AutoField(primary_key=True)
+    Name = models.CharField(max_length=100)
+    Cost = models.DecimalField(max_digits=10, decimal_places=2)
+    Description = models.TextField()
+
+    def __str__(self):
+        return f"Other Expense: {self.Name}"
+
+class EmergencyContact(models.Model):
+    EC_ID = models.AutoField(primary_key=True)
+    EC_FirstName = models.CharField(max_length=50)
+    EC_LastName = models.CharField(max_length=50)
+    ZipCode = models.IntegerField()
+    Phone_Number = models.CharField(max_length=15)
+    Street_Address = models.CharField(max_length=100)
+    City = models.CharField(max_length=50)
+    State = models.CharField(max_length=50)
+    Email = models.EmailField()
+
+    def __str__(self):
+        return f"Emergency Contact: {self.EC_FirstName} {self.EC_LastName}"
