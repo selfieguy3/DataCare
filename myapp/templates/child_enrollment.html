@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Enrollment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #80deea;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Child Enrollment</h1>
+        <!-- Child Information Section -->
+        <div class="section">
+            <h2>Child Information</h2>
+            <a href="{% url 'add_child' %}" class="button">Add New Child</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Child ID</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Date of Birth</th>
+                            <th>Average Cost</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for child in children %}
+                        <tr>
+                            <td>{{ child.id }}</td>
+                            <td>{{ child.first_name }}</td>
+                            <td>{{ child.middle_name }}</td>
+                            <td>{{ child.last_name }}</td>
+                            <td>{{ child.age }}</td>
+                            <td>{{ child.date_of_birth }}</td>
+                            <td>{{ child.average_cost }}</td>
+                            <td>
+                                <a href="{% url 'edit_child' child.id %}">Edit</a>
+                                <a href="{% url 'delete_child' child.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Health Records Section -->
+        <div class="section">
+            <h2>Health Records</h2>
+            <a href="{% url 'add_health_record' %}" class="button">Add/Edit Health Records</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Health Record ID</th>
+                            <th>Immunizations</th>
+                            <th>Medical Conditions</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in health_records %}
+                        <tr>
+                            <td>{{ record.id }}</td>
+                            <td>{{ record.immunizations }}</td>
+                            <td>{{ record.medical_conditions }}</td>
+                            <td>
+                                <a href="{% url 'edit_health_record' record.id %}">Edit</a>
+                                <a href="{% url 'delete_health_record' record.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Emergency Contacts Section -->
+        <div class="section">
+            <h2>Emergency Contacts</h2>
+            <a href="{% url 'add_emergency_contact' %}" class="button">Add/Edit Emergency Contacts</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Contact ID</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Street Address</th>
+                            <th>City</th>
+                            <th>Zip Code</th>
+                            <th>State</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for contact in emergency_contacts %}
+                        <tr>
+                            <td>{{ contact.id }}</td>
+                            <td>{{ contact.first_name }}</td>
+                            <td>{{ contact.middle_name }}</td>
+                            <td>{{ contact.last_name }}</td>
+                            <td>{{ contact.phone_number }}</td>
+                            <td>{{ contact.street_address }}</td>
+                            <td>{{ contact.city }}</td>
+                            <td>{{ contact.zip_code }}</td>
+                            <td>{{ contact.state }}</td>
+                            <td>
+                                <a href="{% url 'edit_emergency_contact' contact.id %}">Edit</a>
+                                <a href="{% url 'delete_emergency_contact' contact.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Allergies Section -->
+        <div class="section">
+            <h2>Allergies</h2>
+            <a href="{% url 'add_allergy' %}" class="button">Add/Edit Allergies</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Allergy ID</th>
+                            <th>Allergy Name</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for allergy in allergies %}
+                        <tr>
+                            <td>{{ allergy.id }}</td>
+                            <td>{{ allergy.allergy_name }}</td>
+                            <td>{{ allergy.description }}</td>
+                            <td>
+                                <a href="{% url 'edit_allergy' allergy.id %}">Edit</a>
+                                <a href="{% url 'delete_allergy' allergy.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

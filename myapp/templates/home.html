@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daycare Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            font-size: 2.3em; /* Increase font size for welcome sentence */
+            margin-bottom: 120px; /* Increase margin-bottom for more separation */
+        }
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 80px; /* Increase gap for more separation */
+        }
+        .button {
+            padding: 30px; /* Increase padding for larger buttons */
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+            font-size: 24px; /* Increase font size inside buttons */
+        }
+        .button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to our daycare management system. Please select a service to continue.</h1>
+        <div class="button-grid">
+            <a href="{% url 'child_enrollment' %}" class="button">Child Enrollment</a>
+            <a href="#" class="button">Parent Information</a>
+            <a href="#" class="button">Staff Management</a>
+            <a href="#" class="button">Activity Management</a>
+            <a href="#" class="button">Attendance Tracking</a>
+            <a href="#" class="button">Turnover</a>
+        </div>
+    </div>
+</body>
+</html>
