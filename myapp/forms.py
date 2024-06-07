@@ -1,5 +1,5 @@
 from django import forms
-from .models import Child, HealthRecord, EmergencyContact, Allergy
+from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship
 
 class ChildForm(forms.ModelForm):
     class Meta:
@@ -20,3 +20,14 @@ class AllergyForm(forms.ModelForm):
     class Meta:
         model = Allergy
         fields = ['child', 'allergy_name', 'description']
+
+class ParentForm(forms.ModelForm):
+    class Meta:
+        model = Parent
+        fields = ['first_name', 'middle_name', 'last_name', 'age', 'phone_number', 'street_address', 'city', 'zip_code', 'state', 'email']
+
+
+class ParentChildRelationshipForm(forms.ModelForm):
+    class Meta:
+        model = ParentChildRelationship
+        fields = ['parent', 'child']

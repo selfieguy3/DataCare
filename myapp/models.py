@@ -28,3 +28,19 @@ class Allergy(models.Model):
     child = models.ForeignKey(Child, on_delete=models.CASCADE)
     allergy_name = models.CharField(max_length=100)
     description = models.TextField()
+
+class Parent(models.Model):
+    first_name = models.CharField(max_length=50)
+    middle_name = models.CharField(max_length=50, blank=True, null=True)
+    last_name = models.CharField(max_length=50)
+    age = models.IntegerField()
+    phone_number = models.CharField(max_length=15)
+    street_address = models.CharField(max_length=100)
+    city = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=10)
+    state = models.CharField(max_length=50)
+    email = models.EmailField()
+
+class ParentChildRelationship(models.Model):
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE)
+    child = models.ForeignKey(Child, on_delete=models.CASCADE)

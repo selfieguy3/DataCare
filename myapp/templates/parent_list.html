@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Information & Relationships</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 20px;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #80deea;
+        }
+        a.button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+        }
+        a.button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .back-button a {
+            display: block;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+        }
+        .back-button a:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-button">
+            <a href="{% url 'home' %}" class="button">&larr;</a>
+        </div>
+        <h1>Parent Information & Relationships</h1>
+        
+        <!-- Parent Information Section -->
+        <h2>Parent List</h2>
+        <a href="{% url 'add_parent' %}" class="button">Add New Parent</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Parent ID</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                    <th>Phone Number</th>
+                    <th>Street Address</th>
+                    <th>City</th>
+                    <th>Zip Code</th>
+                    <th>State</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for parent in parents %}
+                <tr>
+                    <td>{{ parent.id }}</td>
+                    <td>{{ parent.first_name }}</td>
+                    <td>{{ parent.middle_name }}</td>
+                    <td>{{ parent.last_name }}</td>
+                    <td>{{ parent.age }}</td>
+                    <td>{{ parent.phone_number }}</td>
+                    <td>{{ parent.street_address }}</td>
+                    <td>{{ parent.city }}</td>
+                    <td>{{ parent.zip_code }}</td>
+                    <td>{{ parent.state }}</td>
+                    <td>{{ parent.email }}</td>
+                    <td>
+                        <a href="{% url 'edit_parent' parent.id %}">Edit</a>
+                        <a href="{% url 'delete_parent' parent.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Parent-Child Relationships Section -->
+        <h2>Parent-Child Relationships</h2>
+        <a href="{% url 'assign_child' %}" class="button">Assign Children to Parent</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Parent Name</th>
+                    <th>Child Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for relationship in relationships %}
+                <tr>
+                    <td>{{ relationship.parent.first_name }} {{ relationship.parent.middle_name }} {{ relationship.parent.last_name }}</td>
+                    <td>{{ relationship.child.first_name }} {{ relationship.child.middle_name }} {{ relationship.child.last_name }}</td>
+                    <td>
+                        <a href="{% url 'edit_relationship' relationship.id %}">Edit</a>
+                        <a href="{% url 'delete_relationship' relationship.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

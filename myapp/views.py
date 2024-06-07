@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm
-from .models import Child, HealthRecord, EmergencyContact, Allergy
+from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm
+from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship
 
 def home(request):
     return render(request, 'home.html')
@@ -125,3 +125,70 @@ def delete_allergy(request, pk):
         allergy.delete()
         return redirect('child_enrollment')
     return render(request, 'confirm_delete.html', {'object': allergy})
+
+
+def parent_list(request):
+    parents = Parent.objects.all()
+    relationships = ParentChildRelationship.objects.all()
+    return render(request, 'parent_list.html', {'parents': parents, 
+                                                'relationships': relationships})
+
+def add_parent(request):
+    if request.method == 'POST':
+        form = ParentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('parent_list')
+    else:
+        form = ParentForm()
+    return render(request, 'add_parents.html', {'form': form})
+
+
+def edit_parent(request, parent_id):
+    parent = get_object_or_404(Parent, id=parent_id)
+    if request.method == 'POST':
+        form = ParentForm(request.POST, instance=parent)
+        if form.is_valid():
+            form.save()
+            return redirect('parent_list')
+    else:
+        form = ParentForm(instance=parent)
+    return render(request, 'edit_parents.html', {'form': form})
+
+
+def delete_parent(request, parent_id):
+    parent = get_object_or_404(Parent, id=parent_id)
+    if request.method == 'POST':
+        parent.delete()
+        return redirect('parent_list')
+    return render(request, 'confirm_delete1.html', {'object': parent})
+
+
+def assign_child(request):
+    if request.method == 'POST':
+        form = ParentChildRelationshipForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('parent_list')
+    else:
+        form = ParentChildRelationshipForm()
+    return render(request, 'assign_child.html', {'form': form})
+
+
+def edit_relationship(request, relationship_id):
+    relationship = get_object_or_404(ParentChildRelationship, id=relationship_id)
+    if request.method == 'POST':
+        form = ParentChildRelationshipForm(request.POST, instance=relationship)
+        if form.is_valid():
+            form.save()
+            return redirect('parent_list')
+    else:
+        form = ParentChildRelationshipForm(instance=relationship)
+    return render(request, 'edit_relationship.html', {'form': form})
+
+
+def delete_relationship(request, relationship_id):
+    relationship = get_object_or_404(ParentChildRelationship, id=relationship_id)
+    relationship.delete()
+    return redirect('parent_list')
+

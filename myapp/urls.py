@@ -18,5 +18,13 @@ urlpatterns = [
     path('add-allergy/', views.add_allergy, name='add_allergy'),
     path('edit-allergy/<int:pk>/', views.edit_allergy, name='edit_allergy'),
     path('delete-allergy/<int:pk>/', views.delete_allergy, name='delete_allergy'),
+    path('parents/', views.parent_list, name='parent_list'),
+    path('add-parents/', views.add_parent, name='add_parent'),
+    path('edit/<int:parent_id>/', views.edit_parent, name='edit_parent'),
+    path('delete/<int:parent_id>/', views.delete_parent, name='delete_parent'),
+    path('assign/', views.assign_child, name='assign_child'),
+    path('edit_relationship/<int:relationship_id>/', views.edit_relationship, name='edit_relationship'),
+    path('delete_relationship/<int:relationship_id>/', views.delete_relationship, name='delete_relationship'),
+
 ]
 
