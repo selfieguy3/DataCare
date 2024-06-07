@@ -6,7 +6,13 @@ def home(request):
     return render(request, 'home.html')
 
 def child_enrollment(request):
-    return render(request, 'child_enrollment.html')
+    context = {
+        'children': Child.objects.all(), 
+        'health_records': HealthRecord.objects.all(), 
+        'emergency_contacts': EmergencyContact.objects.all(), 
+        'allergies': Allergy.objects.all(), 
+    }
+    return render(request, 'child_enrollment.html', context)
 
 def add_child(request):
     if request.method == 'POST':
