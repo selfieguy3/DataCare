@@ -98,3 +98,11 @@ class ChildActivityAssignment(models.Model):
 
     def __str__(self):
         return f"Assigned {self.child.first_name} {self.child.middle_name} {self.child.last_name} to {self.activity.activity_name} on {self.date}"
+
+class Attendance(models.Model):
+    child = models.ForeignKey(Child, on_delete=models.CASCADE)
+    date = models.DateField()
+    is_present = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"Attendance for {self.child} on {self.date}"

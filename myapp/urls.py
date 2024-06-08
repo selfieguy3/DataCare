@@ -42,6 +42,10 @@ urlpatterns = [
     path('activities/assign/', views.assign_activity_child, name='assign_activity_child'),
     path('activities/assign/edit/<int:assignment_id>/', views.edit_activity_assignment, name='edit_activity_assignment'),
     path('activities/assign/delete/<int:assignment_id>/', views.delete_activity_assignment, name='delete_activity_assignment'),
+    path('attendance/', views.attendance_list, name='attendance_list'),
+    path('attendance/add/', views.add_attendance, name='add_attendance'),
+    path('attendance/edit/<int:pk>/', views.edit_attendance, name='edit_attendance'),
+    path('attendance/delete/<int:pk>/', views.delete_attendance, name='delete_attendance'),
 
 ]
 

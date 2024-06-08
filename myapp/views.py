@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm
-from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment
+from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm
+from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance
 
 def home(request):
     return render(request, 'home.html')
@@ -349,3 +349,35 @@ def delete_activity_assignment(request, assignment_id):
     assignment = get_object_or_404(ChildActivityAssignment, id=assignment_id)
     assignment.delete()
     return redirect('activity_list')
+
+def attendance_list(request):
+    attendances = Attendance.objects.all()
+    return render(request, 'attendance_list.html', {'attendances': attendances})
+
+def add_attendance(request):
+    if request.method == 'POST':
+        form = AttendanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('attendance_list')
+    else:
+        form = AttendanceForm()
+    return render(request, 'add_attendance.html', {'form': form})
+
+def edit_attendance(request, pk):
+    attendance = get_object_or_404(Attendance, pk=pk)
+    if request.method == 'POST':
+        form = AttendanceForm(request.POST, instance=attendance)
+        if form.is_valid():
+            form.save()
+            return redirect('attendance_list')
+    else:
+        form = AttendanceForm(instance=attendance)
+    return render(request, 'edit_attendance.html', {'form': form})
+
+def delete_attendance(request, pk):
+    attendance = get_object_or_404(Attendance, pk=pk)
+    if request.method == 'POST':
+        attendance.delete()
+        return redirect('attendance_list')
+    return render(request, 'confirm_delete4.html', {'object': attendance})

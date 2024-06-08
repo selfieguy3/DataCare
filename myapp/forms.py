@@ -1,5 +1,5 @@
 from django import forms
-from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment
+from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance
 
 class ChildForm(forms.ModelForm):
     class Meta:
@@ -56,3 +56,12 @@ class ChildActivityAssignmentForm(forms.ModelForm):
     class Meta:
         model = ChildActivityAssignment
         fields = ['child', 'activity', 'date']
+
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = Attendance
+        fields = ['date', 'child', 'is_present']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+            'is_present': forms.CheckboxInput()
+        }
