@@ -27,6 +27,9 @@ class EmergencyContact(models.Model):
     zip_code = models.CharField(max_length=10)
     state = models.CharField(max_length=50)
 
+    def __str__(self):
+        return f"{self.first_name} {self.middle_name} {self.last_name} (ID: {self.id})"
+
 class Allergy(models.Model):
     child = models.ForeignKey(Child, on_delete=models.CASCADE)
     allergy_name = models.CharField(max_length=100)
@@ -43,6 +46,9 @@ class Parent(models.Model):
     zip_code = models.CharField(max_length=10)
     state = models.CharField(max_length=50)
     email = models.EmailField()
+
+    def __str__(self):
+        return f"{self.first_name} {self.middle_name} {self.last_name} (ID: {self.id})"
 
 
 class ParentChildRelationship(models.Model):
