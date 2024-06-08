@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Allergy</title>
+    <title>Edit Staff</title>
     <style>
         html, body {
             height: 100%;
@@ -54,12 +54,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>Add Allergy</h1>
+        <h1>Edit Staff</h1>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="button-submit">Save</button>
-            <a href="{% url 'child_enrollment' %}" class="button">Back</a>
+            <a href="{% url 'staff_list' %}" class="button">Back</a>
         </form>
     </div>
 </body>

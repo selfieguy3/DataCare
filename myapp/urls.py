@@ -25,6 +25,16 @@ urlpatterns = [
     path('assign/', views.assign_child, name='assign_child'),
     path('edit_relationship/<int:relationship_id>/', views.edit_relationship, name='edit_relationship'),
     path('delete_relationship/<int:relationship_id>/', views.delete_relationship, name='delete_relationship'),
+    path('staff/', views.staff_list, name='staff_list'),
+    path('staff/add/', views.staff_add, name='staff_add'),
+    path('staff/edit/<int:pk>/', views.staff_edit, name='staff_edit'),
+    path('staff/delete/<int:pk>/', views.staff_delete, name='staff_delete'),
+    path('assign_staff_child/', views.assign_staff_child, name='assign_staff_child'),
+    path('assign_staff_activity/', views.assign_staff_activity, name='assign_staff_activity'),
+    path('delete_staff_child_assignment/<int:assignment_id>/', views.delete_staff_child_assignment, name='delete_staff_child_assignment'),
+    path('delete_staff_activity_assignment/<int:assignment_id>/', views.delete_staff_activity_assignment, name='delete_staff_activity_assignment'),
+    path('edit_staff_child_assignment/<int:assignment_id>/', views.edit_staff_child_assignment, name='edit_staff_child_assignment'),
+    path('edit_staff_activity_assignment/<int:assignment_id>/', views.edit_staff_activity_assignment, name='edit_staff_activity_assignment'),
 
 ]
 

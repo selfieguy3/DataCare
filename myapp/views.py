@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm
-from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship
+from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm
+from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment
 
 def home(request):
     return render(request, 'home.html')
@@ -191,4 +191,96 @@ def delete_relationship(request, relationship_id):
     relationship = get_object_or_404(ParentChildRelationship, id=relationship_id)
     relationship.delete()
     return redirect('parent_list')
+
+def staff_list(request):
+    staffs = Staff.objects.all()
+    staff_child_assignments = StaffChildAssignment.objects.all()
+    staff_activity_assignments = StaffActivityAssignment.objects.all()
+    return render(request, 'staff_list.html', {
+        'staffs': staffs, 
+        'staff_child_assignments': staff_child_assignments,
+        'staff_activity_assignments': staff_activity_assignments
+    })
+
+
+def staff_add(request):
+    if request.method == 'POST':
+        form = StaffForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('staff_list')
+    else:
+        form = StaffForm()
+    return render(request, 'add_staff.html', {'form': form})
+
+
+def staff_edit(request, pk):
+    staff = get_object_or_404(Staff, pk=pk)
+    if request.method == 'POST':
+        form = StaffForm(request.POST, instance=staff)
+        if form.is_valid():
+            form.save()
+            return redirect('staff_list')
+    else:
+        form = StaffForm(instance=staff)
+    return render(request, 'edit_staff.html', {'form': form})
+
+def staff_delete(request, pk):
+    staff = get_object_or_404(Staff, pk=pk)
+    if request.method == 'POST':
+        staff.delete()
+        return redirect('staff_list')
+    return render(request, 'confirm_delete2.html', {'staff': staff})
+
+def assign_staff_child(request):
+    if request.method == 'POST':
+        form = StaffChildAssignmentForm(request.POST) 
+        if form.is_valid():
+            form.save()
+            return redirect('staff_list')
+    else:
+        form = StaffChildAssignmentForm()
+    return render(request, 'assign_staff_child.html', {'form': form})
+
+def edit_staff_child_assignment(request, assignment_id):
+    assignment = get_object_or_404(StaffChildAssignment, pk=assignment_id)
+    if request.method == 'POST':
+        form = StaffChildAssignmentForm(request.POST, instance=assignment)
+        if form.is_valid():
+            form.save()
+            return redirect('staff_list')
+    else:
+        form = StaffChildAssignmentForm(instance=assignment)
+    return render(request, 'edit_staff_child_assignment.html', {'form': form})
+
+def delete_staff_child_assignment(request, assignment_id):
+    assignment = get_object_or_404(StaffChildAssignment, id=assignment_id)
+    assignment.delete()
+    return redirect('staff_list')
+
+def assign_staff_activity(request):
+    if request.method == 'POST':
+        form = StaffActivityAssignmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('staff_list')
+    else:
+        form = StaffActivityAssignmentForm()
+    return render(request, 'assign_staff_activity.html', {'form': form})
+
+def edit_staff_activity_assignment(request, assignment_id):
+    assignment = get_object_or_404(StaffActivityAssignment, pk=assignment_id)
+    if request.method == 'POST':
+        form = StaffActivityAssignmentForm(request.POST, instance=assignment)
+        if form.is_valid():
+            form.save()
+            return redirect('staff_list')
+    else:
+        form = StaffActivityAssignmentForm(instance=assignment)
+    return render(request, 'edit_staff_activity_assignment.html', {'form': form})
+
+def delete_staff_activity_assignment(request, assignment_id):
+    assignment = get_object_or_404(StaffActivityAssignment, id=assignment_id)
+    assignment.delete()
+    return redirect('staff_list')
 

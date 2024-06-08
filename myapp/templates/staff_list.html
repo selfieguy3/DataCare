@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parent Information & Relationships</title>
+    <title>Staff List</title>
     <style>
         html, body {
             height: 100%;
@@ -68,19 +68,17 @@
         <a href="{% url 'home' %}" class="button">&larr;</a>
     </div>
     <div class="container">
-        <h1>Parent Information & Relationships</h1>
-        
-        <!-- Parent Information Section -->
-        <h2>Parent List</h2>
-        <a href="{% url 'add_parent' %}" class="button">Add New Parent</a>
+        <h1>Staff List</h1>
+        <a href="{% url 'staff_add' %}" class="button">Add New Staff Member</a>
         <table>
             <thead>
                 <tr>
-                    <th>Parent ID</th>
+                    <th>Staff ID</th>
                     <th>First Name</th>
                     <th>Middle Name</th>
                     <th>Last Name</th>
                     <th>Age</th>
+                    <th>Salary</th>
                     <th>Phone Number</th>
                     <th>Street Address</th>
                     <th>City</th>
@@ -91,47 +89,77 @@
                 </tr>
             </thead>
             <tbody>
-                {% for parent in parents %}
+                {% for staff in staffs %}
                 <tr>
-                    <td>{{ parent.id }}</td>
-                    <td>{{ parent.first_name }}</td>
-                    <td>{{ parent.middle_name }}</td>
-                    <td>{{ parent.last_name }}</td>
-                    <td>{{ parent.age }}</td>
-                    <td>{{ parent.phone_number }}</td>
-                    <td>{{ parent.street_address }}</td>
-                    <td>{{ parent.city }}</td>
-                    <td>{{ parent.zip_code }}</td>
-                    <td>{{ parent.state }}</td>
-                    <td>{{ parent.email }}</td>
+                    <td>{{ staff.id }}</td>
+                    <td>{{ staff.first_name }}</td>
+                    <td>{{ staff.middle_name }}</td>
+                    <td>{{ staff.last_name }}</td>
+                    <td>{{ staff.age }}</td>
+                    <td>{{ staff.salary }}</td>
+                    <td>{{ staff.phone_number }}</td>
+                    <td>{{ staff.street_address }}</td>
+                    <td>{{ staff.city }}</td>
+                    <td>{{ staff.zip_code }}</td>
+                    <td>{{ staff.state }}</td>
+                    <td>{{ staff.email }}</td>
                     <td>
-                        <a href="{% url 'edit_parent' parent.id %}">Edit</a>
-                        <a href="{% url 'delete_parent' parent.id %}">Delete</a>
+                        <a href="{% url 'staff_edit' staff.pk %}">Edit</a>
+                        <a href="{% url 'staff_delete' staff.pk %}">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        <!-- Parent-Child Relationships Section -->
+        <!-- Staff-Child Assignments Section -->
         <h2>Parent-Child Relationships</h2>
-        <a href="{% url 'assign_child' %}" class="button">Assign Children to Parent</a>
+        <a href="{% url 'assign_staff_child' %}" class="button">Assign Staff to Child</a>
         <table>
             <thead>
                 <tr>
-                    <th>Parent Name</th>
+                    <th>Staff Name</th>
                     <th>Child Name</th>
+                    <th>Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for relationship in relationships %}
+                {% for assignment in staff_child_assignments %}
                 <tr>
-                    <td>{{ relationship.parent.first_name }} {{ relationship.parent.middle_name }} {{ relationship.parent.last_name }}</td>
-                    <td>{{ relationship.child.first_name }} {{ relationship.child.middle_name }} {{ relationship.child.last_name }}</td>
+                    <td>{{ assignment.staff.first_name }} {{ assignment.staff.middle_name }} {{ assignment.staff.last_name }}</td>
+                    <td>{{ assignment.child.first_name }} {{ assignment.child.middle_name }} {{ assignment.child.last_name }}</td>
+                    <td>{{ assignment.date }}</td>
                     <td>
-                        <a href="{% url 'edit_relationship' relationship.id %}">Edit</a>
-                        <a href="{% url 'delete_relationship' relationship.id %}">Delete</a>
+                        <a href="{% url 'edit_staff_child_assignment' assignment.id %}">Edit</a>
+                        <a href="{% url 'delete_staff_child_assignment' assignment.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Staff-Activity Assignments Section -->
+        <h2>Staff-Activity Assignments</h2>
+        <a href="{% url 'assign_staff_activity' %}" class="button">Assign Staff to Activity</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Staff Name</th>
+                    <th>Activity Name</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment in staff_activity_assignments %}
+                <tr>
+                    <td>{{ assignment.staff.first_name }} {{ assignment.staff.middle_name }} {{ assignment.staff.last_name }}</td>
+                    <td>{{ assignment.activity_name }}</td>
+                    <td>{{ assignment.date }}</td>
+                    <td>
+                        <a href="{% url 'edit_staff_activity_assignment' assignment.id %}">Edit</a>
+                        <a href="{% url 'delete_staff_activity_assignment' assignment.id %}">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}
