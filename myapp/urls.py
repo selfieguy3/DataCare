@@ -35,6 +35,13 @@ urlpatterns = [
     path('delete_staff_activity_assignment/<int:assignment_id>/', views.delete_staff_activity_assignment, name='delete_staff_activity_assignment'),
     path('edit_staff_child_assignment/<int:assignment_id>/', views.edit_staff_child_assignment, name='edit_staff_child_assignment'),
     path('edit_staff_activity_assignment/<int:assignment_id>/', views.edit_staff_activity_assignment, name='edit_staff_activity_assignment'),
+    path('activities/', views.activity_list, name='activity_list'),
+    path('activities/add/', views.activity_add, name='activity_add'),
+    path('activities/edit/<int:pk>/', views.activity_edit, name='activity_edit'),
+    path('activities/delete/<int:pk>/', views.activity_delete, name='activity_delete'),
+    path('activities/assign/', views.assign_activity_child, name='assign_activity_child'),
+    path('activities/assign/edit/<int:assignment_id>/', views.edit_activity_assignment, name='edit_activity_assignment'),
+    path('activities/assign/delete/<int:assignment_id>/', views.delete_activity_assignment, name='delete_activity_assignment'),
 
 ]
 

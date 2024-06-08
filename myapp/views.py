@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm
-from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment
+from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm
+from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment
 
 def home(request):
     return render(request, 'home.html')
@@ -284,3 +284,68 @@ def delete_staff_activity_assignment(request, assignment_id):
     assignment.delete()
     return redirect('staff_list')
 
+from django.shortcuts import render
+from .models import Activity, ChildActivityAssignment
+
+def activity_list(request):
+    activities = Activity.objects.all()
+    child_activities_assignments = ChildActivityAssignment.objects.all()
+    return render(request, 'activity_list.html', {
+        'activities': activities,
+        'child_activities_assignments': child_activities_assignments
+    })
+
+
+def activity_add(request):
+    if request.method == 'POST':
+        form = ActivityForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('activity_list')
+    else:
+        form = ActivityForm()
+    return render(request, 'add_activity.html', {'form': form})
+
+def activity_edit(request, pk):
+    activity = get_object_or_404(Activity, pk=pk)
+    if request.method == 'POST':
+        form = ActivityForm(request.POST, instance=activity)
+        if form.is_valid():
+            form.save()
+            return redirect('activity_list')
+    else:
+        form = ActivityForm(instance=activity)
+    return render(request, 'edit_activity.html', {'form': form})
+
+def activity_delete(request, pk):
+    activity = get_object_or_404(Activity, pk=pk)
+    if request.method == 'POST':
+        activity.delete()
+        return redirect('activity_list')
+    return render(request, 'confirm_delete3.html', {'activity': activity})
+
+def assign_activity_child(request):
+    if request.method == 'POST':
+        form = ChildActivityAssignmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('activity_list')
+    else:
+        form = ChildActivityAssignmentForm()
+    return render(request, 'assign_child_activity.html', {'form': form})
+
+def edit_activity_assignment(request, assignment_id):
+    assignment = get_object_or_404(ChildActivityAssignment, pk=assignment_id)
+    if request.method == 'POST':
+        form = ChildActivityAssignmentForm(request.POST, instance=assignment)
+        if form.is_valid():
+            form.save()
+            return redirect('activity_list')
+    else:
+        form = ChildActivityAssignmentForm(instance=assignment)
+    return render(request, 'edit_activity_assignment.html', {'form': form})
+
+def delete_activity_assignment(request, assignment_id):
+    assignment = get_object_or_404(ChildActivityAssignment, id=assignment_id)
+    assignment.delete()
+    return redirect('activity_list')

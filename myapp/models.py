@@ -78,6 +78,9 @@ class Activity(models.Model):
     age_group = models.CharField(max_length=20)
     description = models.TextField()
 
+    def __str__(self):
+        return f"{self.activity_name} (ID: {self.id})"
+
 class StaffChildAssignment(models.Model):
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
     child = models.ForeignKey(Child, on_delete=models.CASCADE)
@@ -87,3 +90,11 @@ class StaffActivityAssignment(models.Model):
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
     date = models.DateField()
+
+class ChildActivityAssignment(models.Model):   
+    child = models.ForeignKey(Child, on_delete=models.CASCADE)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    date = models.DateField()
+
+    def __str__(self):
+        return f"Assigned {self.child.first_name} {self.child.middle_name} {self.child.last_name} to {self.activity.activity_name} on {self.date}"

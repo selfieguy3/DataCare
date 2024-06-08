@@ -155,7 +155,7 @@
                 {% for assignment in staff_activity_assignments %}
                 <tr>
                     <td>{{ assignment.staff.first_name }} {{ assignment.staff.middle_name }} {{ assignment.staff.last_name }}</td>
-                    <td>{{ assignment.activity_name }}</td>
+                    <td>{{ assignment.activity.activity_name }}</td>
                     <td>{{ assignment.date }}</td>
                     <td>
                         <a href="{% url 'edit_staff_activity_assignment' assignment.id %}">Edit</a>
