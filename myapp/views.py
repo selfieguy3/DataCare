@@ -380,7 +380,7 @@ def delete_attendance(request, pk):
     if request.method == 'POST':
         attendance.delete()
         return redirect('attendance_list')
-    return render(request, 'confirm_delete4.html', {'object': attendance})
+    return render(request, 'confirm_delete4.html', {'attendance': attendance})
 
 def payment_list(request):
     payments = Payment.objects.all()

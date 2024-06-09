@@ -12,17 +12,30 @@
             font-family: Arial, sans-serif;
             text-align: center;
             background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
-        .outer-container {
+        body {
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: calc(100vh - 40px); /* Adjusted to remove the white space */
-            padding: 20px;
+            align-items: flex-start; /* Align items to the top */
+            min-height: 100vh;
+        }
+        .outer-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 20px;
+            box-sizing: border-box;
         }
         .container {
             width: 80%;
-            border-radius: 8px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1, h2, h3 {
+            margin: 20px 0;
         }
         table {
             width: 100%;
@@ -52,7 +65,7 @@
             color: #004d40;
         }
         .back-button {
-            position: absolute;
+            position: fixed;
             top: 10px;
             left: 10px;
         }
