@@ -13,12 +13,20 @@
             text-align: center;
             background: linear-gradient(to bottom, #e0f7fa, #80deea);
         }
-        .container {
+        .outer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 40px); /* Adjusted to remove the white space */
             padding: 20px;
         }
-        table {
+        .container {
             width: 80%;
-            margin: auto;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
             border-collapse: collapse;
         }
         th, td {
@@ -67,65 +75,68 @@
     <div class="back-button">
         <a href="{% url 'home' %}" class="button">&larr;</a>
     </div>
-    <div class="container">
-        <h1>Activity List</h1>
-        <a href="{% url 'activity_add' %}" class="button">Add New Activity</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Activity ID</th>
-                    <th>Activity Name</th>
-                    <th>Duration</th>
-                    <th>Cost</th>
-                    <th>Age Group</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for activity in activities %}
-                <tr>
-                    <td>{{ activity.id }}</td>
-                    <td>{{ activity.activity_name }}</td>
-                    <td>{{ activity.duration }}</td>
-                    <td>{{ activity.cost }}</td>
-                    <td>{{ activity.age_group }}</td>
-                    <td>{{ activity.description }}</td>
-                    <td>
-                        <a href="{% url 'activity_edit' activity.pk %}">Edit</a>
-                        <a href="{% url 'activity_delete' activity.pk %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="outer-container">
+        <div class="container">
+            <h1>Activity Management</h1>
+            <h2>Activity List</h2>
+            <a href="{% url 'activity_add' %}" class="button">Add New Activity</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Activity ID</th>
+                        <th>Activity Name</th>
+                        <th>Duration</th>
+                        <th>Cost</th>
+                        <th>Age Group</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in activities %}
+                    <tr>
+                        <td>{{ activity.id }}</td>
+                        <td>{{ activity.activity_name }}</td>
+                        <td>{{ activity.duration }}</td>
+                        <td>{{ activity.cost }}</td>
+                        <td>{{ activity.age_group }}</td>
+                        <td>{{ activity.description }}</td>
+                        <td>
+                            <a href="{% url 'activity_edit' activity.pk %}">Edit</a>
+                            <a href="{% url 'activity_delete' activity.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
-        <!-- Activity-Child Assignments Section -->
-        <h2>Activity-Child Assignments</h2>
-        <a href="{% url 'assign_activity_child' %}" class="button">Assign Activity to Child</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Activity Name</th>
-                    <th>Child Name</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for assignment in child_activities_assignments %}
-                <tr>
-                    <td>{{ assignment.activity.activity_name }}</td>
-                    <td>{{ assignment.child.first_name }} {{ assignment.child.middle_name }} {{ assignment.child.last_name }}</td>
-                    <td>{{ assignment.date }}</td>
-                    <td>
-                        <a href="{% url 'edit_activity_assignment' assignment.id %}">Edit</a>
-                        <a href="{% url 'delete_activity_assignment' assignment.id %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            <!-- Activity-Child Assignments Section -->
+            <h3>Activity-Child Assignments</h3>
+            <a href="{% url 'assign_activity_child' %}" class="button">Assign Activity to Child</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Activity Name</th>
+                        <th>Child Name</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in child_activities_assignments %}
+                    <tr>
+                        <td>{{ assignment.activity.activity_name }}</td>
+                        <td>{{ assignment.child.first_name }} {{ assignment.child.middle_name }} {{ assignment.child.last_name }}</td>
+                        <td>{{ assignment.date }}</td>
+                        <td>
+                            <a href="{% url 'edit_activity_assignment' assignment.id %}">Edit</a>
+                            <a href="{% url 'delete_activity_assignment' assignment.id %}">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
