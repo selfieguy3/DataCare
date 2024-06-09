@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Payment</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100%;
+            padding: 20px;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+        .button-submit {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            color: #00796b;
+            cursor: pointer;
+        }
+        .button-submit:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Payment</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button-submit">Save Changes</button>
+            <a href="{% url 'payment_list' %}" class="button">Back</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -46,6 +46,15 @@ urlpatterns = [
     path('attendance/add/', views.add_attendance, name='add_attendance'),
     path('attendance/edit/<int:pk>/', views.edit_attendance, name='edit_attendance'),
     path('attendance/delete/<int:pk>/', views.delete_attendance, name='delete_attendance'),
-
+    path('payments/', views.payment_list, name='payment_list'),
+    path('payments/add/', views.add_payment, name='add_payment'),
+    path('payments/edit/<int:pk>/', views.edit_payment, name='edit_payment'),
+    path('payments/delete/<int:pk>/', views.delete_payment, name='delete_payment'),
+    path('expenses/add/', views.add_expense, name='add_expense'),
+    path('expenses/edit/<int:pk>/', views.edit_expense, name='edit_expense'),
+    path('expenses/delete/<int:pk>/', views.delete_expense, name='delete_expense'),
+    path('other_expenses/add/', views.add_other_expense, name='add_other_expense'),
+    path('other_expenses/edit/<int:pk>/', views.edit_other_expense, name='edit_other_expense'),
+    path('other_expenses/delete/<int:pk>/', views.delete_other_expense, name='delete_other_expense'),
 ]
 

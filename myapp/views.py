@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm
-from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance
+from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm, PaymentForm, ExpenseForm, OtherExpensesForm
+from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, Expense, OtherExpenses
 
 def home(request):
     return render(request, 'home.html')
@@ -381,3 +381,95 @@ def delete_attendance(request, pk):
         attendance.delete()
         return redirect('attendance_list')
     return render(request, 'confirm_delete4.html', {'object': attendance})
+
+def payment_list(request):
+    payments = Payment.objects.all()
+    expenses = Expense.objects.all()
+    other_expenses = OtherExpenses.objects.all()
+    return render(request, 'payment_list.html', {'payments': payments,
+                                                 'expenses': expenses,
+                                                 'other_expenses': other_expenses})
+
+def add_payment(request):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')
+    else:
+        form = PaymentForm()
+    return render(request, 'add_payment.html', {'form': form})
+
+def edit_payment(request, pk):
+    payment = get_object_or_404(Payment, pk=pk)
+    if request.method == 'POST':
+        form = PaymentForm(request.POST, instance=payment)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')
+    else:
+        form = PaymentForm(instance=payment)
+    return render(request, 'edit_payment.html', {'form': form})
+
+def delete_payment(request, pk):
+    payment = get_object_or_404(Payment, pk=pk)
+    if request.method == 'POST':
+        payment.delete()
+        return redirect('payment_list')
+    return render(request, 'confirm_delete5.html', {'object': payment})
+
+def add_expense(request):
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')
+    else:
+        form = ExpenseForm()
+    return render(request, 'add_expense.html', {'form': form})
+
+def edit_expense(request, pk):
+    expense = get_object_or_404(Expense, pk=pk)
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST, instance=expense)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')
+    else:
+        form = ExpenseForm(instance=expense)
+    return render(request, 'edit_expense.html', {'form': form})
+
+def delete_expense(request, pk):
+    expense = get_object_or_404(Expense, pk=pk)
+    if request.method == 'POST':
+        expense.delete()
+        return redirect('payment_list')
+    return render(request, 'confirm_delete6.html', {'object': expense})
+
+def add_other_expense(request):
+    if request.method == 'POST':
+        form = OtherExpensesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')
+    else:
+        form = OtherExpensesForm()
+    return render(request, 'add_other_expense.html', {'form': form})
+
+def edit_other_expense(request, pk):
+    other_expense = get_object_or_404(OtherExpenses, pk=pk)
+    if request.method == 'POST':
+        form = OtherExpensesForm(request.POST, instance=other_expense)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')
+    else:
+        form = OtherExpensesForm(instance=other_expense)
+    return render(request, 'edit_other_expense.html', {'form': form})
+
+def delete_other_expense(request, pk):
+    other_expense = get_object_or_404(OtherExpenses, pk=pk)
+    if request.method == 'POST':
+        other_expense.delete()
+        return redirect('payment_list')
+    return render(request, 'confirm_delete7.html', {'object': other_expense})

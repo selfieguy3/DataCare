@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Overview</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            /* Ensure the gradient covers the full height */
+            background-attachment: fixed;
+        }
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .container {
+            padding: 20px;
+            margin-top: 50px;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #80deea;
+        }
+        a.button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+        }
+        a.button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+        form.inline {
+            display: inline;
+        }
+        button.inline {
+            display: inline-block;
+            margin: 0;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            color: #00796b;
+            cursor: pointer;
+        }
+        button.inline:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+        <a href="{% url 'home' %}" class="button">&larr;</a>
+    </div>
+
+    <div class="container">
+        <h1>Financial Overview</h1>
+        
+        <!-- Payments Section -->
+        <h2>Payments</h2>
+        <a href="{% url 'add_payment' %}" class="button">Add New Payment</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Payment ID</th>
+                    <th>Parent Name</th>
+                    <th>Amount Paid</th>
+                    <th>Payment Method</th>
+                    <th>Payment Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.id }}</td>
+                    <td>{{ payment.parent.first_name }} {{ payment.parent.middle_name }} {{ payment.parent.last_name }}</td>
+                    <td>{{ payment.amount_paid }}</td>
+                    <td>{{ payment.payment_method }}</td>
+                    <td>{{ payment.payment_date }}</td>
+                    <td>
+                        <a href="{% url 'edit_payment' payment.pk %}">Edit</a>
+                        <a href="{% url 'delete_payment' payment.pk %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Expenses Section -->
+        <h2>Child Expenses</h2>
+        <a href="{% url 'add_expense' %}" class="button">Add New Child Expense</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Expense ID</th>
+                    <th>Child Name</th>
+                    <th>Activity</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.id }}</td>
+                    <td>{% if expense.child %}{{ expense.child.first_name }} {{ expense.child.middle_name }} {{ expense.child.last_name }}{% else %}N/A{% endif %}</td>
+                    <td>{% if expense.activity %}{{ expense.activity.activity_name }}{% else %}N/A{% endif %}</td>
+                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.description }}</td>
+                    <td>
+                        <a href="{% url 'edit_expense' expense.pk %}">Edit</a>
+                        <a href="{% url 'delete_expense' expense.pk %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Other Expenses Section -->
+        <h2>Other Expenses</h2>
+        <a href="{% url 'add_other_expense' %}" class="button">Add New Other Expense</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Other Expense ID</th>
+                    <th>Name</th>
+                    <th>Cost</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for other_expense in other_expenses %}
+                <tr>
+                    <td>{{ other_expense.id }}</td>
+                    <td>{{ other_expense.name }}</td>
+                    <td>{{ other_expense.cost }}</td>
+                    <td>{{ other_expense.description }}</td>
+                    <td>
+                        <a href="{% url 'edit_other_expense' other_expense.pk %}">Edit</a>
+                        <a href="{% url 'delete_other_expense' other_expense.pk %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -106,3 +106,30 @@ class Attendance(models.Model):
 
     def __str__(self):
         return f"Attendance for {self.child} on {self.date}"
+    
+class Payment(models.Model):
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_method = models.CharField(max_length=50)
+    payment_date = models.DateField()
+
+    def __str__(self):
+        return f"Payment by {self.parent} on {self.payment_date}"
+    
+class OtherExpenses(models.Model):
+    name = models.CharField(max_length=50)
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
+
+class Expense(models.Model):
+    child = models.ForeignKey(Child, on_delete=models.CASCADE, blank=True, null=True)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, blank=True, null=True)
+    date = models.DateField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Expense on {self.date} for {self.amount}"
