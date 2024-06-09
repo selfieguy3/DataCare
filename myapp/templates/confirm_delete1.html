@@ -58,7 +58,7 @@
 <body>
     <div class="container">
         <h1>Confirm Delete</h1>
-        <p>Are you sure you want to delete the record for {{ object.first_name }} {{ object.middle_name }} {{ object.last_name }} (ID: {{ object.id }})?</p>
+        <p>Are you sure you want to delete the record for parent {{ object.first_name }} {{ object.middle_name }} {{ object.last_name }} (ID: {{ object.id }})?</p>
         <form method="post">
             {% csrf_token %}
             <div class="button-group">

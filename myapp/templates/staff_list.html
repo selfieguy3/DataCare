@@ -12,13 +12,25 @@
             font-family: Arial, sans-serif;
             text-align: center;
             background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            background-attachment: fixed;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
+            width: 80%;
             padding: 20px;
         }
+        h1, h2, h3, h4 {
+            margin: 20px 0;
+        }
         table {
-            width: 80%;
-            margin: auto;
+            width: 100%;
+            margin: 20px 0;
             border-collapse: collapse;
         }
         th, td {
@@ -68,7 +80,9 @@
         <a href="{% url 'home' %}" class="button">&larr;</a>
     </div>
     <div class="container">
-        <h1>Staff List</h1>
+        <h1>Staff Management</h1>
+
+        <h2>Staff List</h2>
         <a href="{% url 'staff_add' %}" class="button">Add New Staff Member</a>
         <table>
             <thead>
@@ -113,7 +127,7 @@
         </table>
 
         <!-- Staff-Child Assignments Section -->
-        <h2>Staff-Child Assignments</h2>
+        <h3>Staff-Child Assignments</h3>
         <a href="{% url 'assign_staff_child' %}" class="button">Assign Staff to Child</a>
         <table>
             <thead>
@@ -140,7 +154,7 @@
         </table>
 
         <!-- Staff-Activity Assignments Section -->
-        <h2>Staff-Activity Assignments</h2>
+        <h4>Staff-Activity Assignments</h4>
         <a href="{% url 'assign_staff_activity' %}" class="button">Assign Staff to Activity</a>
         <table>
             <thead>
