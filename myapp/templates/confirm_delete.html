@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Child</title>
+    <title>Delete Record</title>
     <style>
         html, body {
             height: 100%;
@@ -58,7 +58,11 @@
 <body>
     <div class="container">
         <h1>Confirm Delete</h1>
+        {% if object.child %}
+        <p>Are you sure you want to delete the record for {{ object.child.first_name }} {{ object.child.middle_name }} {{ object.child.last_name }} (Child ID: {{ object.child.id }})?</p>
+        {% else %}
         <p>Are you sure you want to delete the record for {{ object.first_name }} {{ object.middle_name }} {{ object.last_name }} (ID: {{ object.id }})?</p>
+        {% endif %}
         <form method="post">
             {% csrf_token %}
             <div class="button-group">
