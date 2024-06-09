@@ -5,16 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Emergency Contact</title>
     <style>
-        body {
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
             text-align: center;
             background: linear-gradient(to bottom, #e0f7fa, #80deea);
-            margin: 0;
-            padding: 0;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .container {
-            margin-top: 50px;
             padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        form > * {
+            margin: 10px 0;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            color: #00796b;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+        a.button {
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+        }
+        a.button:hover {
+            background-color: #80deea;
+            color: #004d40;
         }
     </style>
 </head>
@@ -24,7 +68,10 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Save</button>
+            <div class="button-group">
+                <button type="submit">Save</button>
+                <a href="{% url 'child_enrollment' %}" class="button">Back</a>
+            </div>
         </form>
     </div>
 </body>

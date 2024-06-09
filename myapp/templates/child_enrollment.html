@@ -111,12 +111,13 @@
         <!-- Health Records Section -->
         <div class="section">
             <h2>Health Records</h2>
-            <a href="{% url 'add_health_record' %}" class="button">Add/Edit Health Records</a>
+            <a href="{% url 'add_health_record' %}" class="button">Add Health Records</a>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Health Record ID</th>
+                            <th>Child ID</th>
+                            <th>Child Name</th>
                             <th>Immunizations</th>
                             <th>Medical Conditions</th>
                             <th>Actions</th>
@@ -125,7 +126,8 @@
                     <tbody>
                         {% for record in health_records %}
                         <tr>
-                            <td>{{ record.id }}</td>
+                            <td>{{ record.child.id }}</td>
+                            <td>{{ record.child.first_name }} {{ record.child.middle_name }} {{ record.child.last_name }}</td>
                             <td>{{ record.immunizations }}</td>
                             <td>{{ record.medical_conditions }}</td>
                             <td>
@@ -142,12 +144,13 @@
         <!-- Emergency Contacts Section -->
         <div class="section">
             <h2>Emergency Contacts</h2>
-            <a href="{% url 'add_emergency_contact' %}" class="button">Add/Edit Emergency Contacts</a>
+            <a href="{% url 'add_emergency_contact' %}" class="button">Add Emergency Contacts</a>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Contact ID</th>
+                            <th>Child ID</th>
+                            <th>Child Name</th>
                             <th>First Name</th>
                             <th>Middle Name</th>
                             <th>Last Name</th>
@@ -162,7 +165,8 @@
                     <tbody>
                         {% for contact in emergency_contacts %}
                         <tr>
-                            <td>{{ contact.id }}</td>
+                            <td>{{ contact.child.id }}</td>
+                            <td>{{ contact.child.first_name }} {{ contact.child.middle_name }} {{ contact.child.last_name }}</td>
                             <td>{{ contact.first_name }}</td>
                             <td>{{ contact.middle_name }}</td>
                             <td>{{ contact.last_name }}</td>
@@ -185,12 +189,13 @@
         <!-- Allergies Section -->
         <div class="section">
             <h2>Allergies</h2>
-            <a href="{% url 'add_allergy' %}" class="button">Add/Edit Allergies</a>
+            <a href="{% url 'add_allergy' %}" class="button">Add Allergies</a>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr>
-                            <th>Allergy ID</th>
+                            <th>Child ID</th>
+                            <th>Child Name</th>
                             <th>Allergy Name</th>
                             <th>Description</th>
                             <th>Actions</th>
@@ -199,7 +204,8 @@
                     <tbody>
                         {% for allergy in allergies %}
                         <tr>
-                            <td>{{ allergy.id }}</td>
+                            <td>{{ allergy.child.id }}</td>
+                            <td>{{ allergy.child.first_name }} {{ allergy.child.middle_name }} {{ allergy.child.last_name }}</td>
                             <td>{{ allergy.allergy_name }}</td>
                             <td>{{ allergy.description }}</td>
                             <td>
