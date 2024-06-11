@@ -60,6 +60,30 @@
             top: 20px;
             left: 20px;
         }
+        .search-bar {
+            margin-top: 20px;
+        }
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #80deea;
+            border: none;
+            color: #004d40;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #004d40;
+            color: white;
+        }
+        .message {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -68,6 +92,17 @@
             <a href="{% url 'home' %}" class="button">&larr;</a>
         </div>
         <h1>Child Enrollment</h1>
+
+        <!-- Search by ChildID -->
+        <div class="search-bar">
+            <form method="GET" action="{% url 'search_child' %}">
+                <input type="text" name="childID" placeholder="Search childInfo by ChildID" required>
+                <button type="submit">Search</button>
+            </form>
+            {% if invalid_child_id %}
+            <div class="message">Invalid ChildID</div>
+            {% endif %}
+        </div>
 
         <!-- Child Information Section -->
         <div class="section">

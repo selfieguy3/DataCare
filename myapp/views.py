@@ -473,3 +473,73 @@ def delete_other_expense(request, pk):
         other_expense.delete()
         return redirect('payment_list')
     return render(request, 'confirm_delete7.html', {'object': other_expense})
+
+def search_child(request):
+    child_id = request.GET.get('childID')
+    health_record = None
+    context = {}
+
+    if child_id:
+        try:
+            child = Child.objects.get(id=child_id)
+            context["child"] = child
+
+            try:
+                health_record = HealthRecord.objects.get(child = child)
+                context['health_record'] = health_record
+            except HealthRecord.DoesNotExist:
+                context['health_record'] = None
+
+            try:
+             emergency_contacts = EmergencyContact.objects.filter(child=child)
+             context['emergency_contacts'] = emergency_contacts
+            except EmergencyContact.DoesNotExist:
+                context['emergency_contacts'] = None
+            
+            try:
+             allergies = Allergy.objects.filter(child=child)
+             context['allergies'] = allergies
+            except Allergy.DoesNotExist:
+                context['allergies'] = None
+
+            try:
+             relationships = ParentChildRelationship.objects.filter(child=child)
+             parents = []
+             for relationship in relationships:
+                parents.append(relationship.parent)
+             context['parents'] = parents
+            except ParentChildRelationship.DoesNotExist:
+                context['parents'] = None
+
+            return render(request, 'child_detail.html', context)
+        
+        except Child.DoesNotExist:
+            children = Child.objects.all()
+
+            health_record = HealthRecord.objects.all()
+            context['health_record'] = health_record
+
+            emergency_contacts = EmergencyContact.objects.all()
+            context['emergency_contacts'] = emergency_contacts
+
+            allergies = Allergy.objects.all()
+            context['allergies'] = allergies
+
+            context = {
+                'children': children,
+                'health_records': health_record,
+                'emergency_contacts': emergency_contacts,
+                'allergies': allergies,
+                'invalid_child_id': True
+            }
+            return render(request, 'child_enrollment.html', context)
+            
+    context = {
+        'children': children,
+        'health_record': health_record,
+        'emergency_contacts': emergency_contacts,
+        'allergies': allergies,
+        'parents': parents
+    }
+    return render(request, 'child_enrollment.html', context)
+    

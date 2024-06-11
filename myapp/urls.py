@@ -56,5 +56,6 @@ urlpatterns = [
     path('other_expenses/add/', views.add_other_expense, name='add_other_expense'),
     path('other_expenses/edit/<int:pk>/', views.edit_other_expense, name='edit_other_expense'),
     path('other_expenses/delete/<int:pk>/', views.delete_other_expense, name='delete_other_expense'),
+    path('search_child/', views.search_child, name='search_child'),
 ]
 

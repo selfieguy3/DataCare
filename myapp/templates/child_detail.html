@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .info {
+            font-size: 1.2em;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-button">
+            <a href="{% url 'child_enrollment' %}" class="button">&larr;</a>
+        </div>
+        <h1>Child Details</h1>
+        <div class="info">
+            <p><strong>Child ID:</strong> {{ child.id }}</p>
+            <p><strong>First Name:</strong> {{ child.first_name }}</p>
+            <p><strong>Middle Name:</strong> {{ child.middle_name }}</p>
+            <p><strong>Last Name:</strong> {{ child.last_name }}</p>
+            <p><strong>Age:</strong> {{ child.age }}</p>
+            <p><strong>Date of Birth:</strong> {{ child.date_of_birth }}</p>
+            <p><strong>Vaccines:</strong>
+                {% if health_record %}
+                    {{health_record.immunizations}}
+                {% else %}
+                    {{'No record'}}
+                {% endif %}
+            </p>
+            <p><strong>Medical Conditions:</strong> 
+                {% if health_record %}
+                    {{health_record.medical_conditions}}
+                {% else %}
+                    {{'No record'}}
+                {% endif %}
+            </p>
+            <p><strong>Emergency Contacts:</strong>
+                {% if emergency_contacts %}
+                    {% for contact in emergency_contacts %}
+                        {{ contact.first_name }} {{ contact.middle_name }} {{ contact.last_name }}
+                    {% endfor %}
+                {% else %}
+                    No emergency contacts
+                {% endif %}
+            </p>
+            <p><strong>Allergy name:</strong>
+                {% if allergies %}
+                    {% for allergy in allergies %}
+                        {{ allergy.allergy_name }} - {{ allergy.description }}
+                    {% endfor %}
+                {% else %}
+                    No allergies
+                {% endif %}
+            </p>
+            <p><strong>Parents:</strong>
+                {% if parents %}
+                    {% for parent in parents %}
+                        {{ parent.first_name }} {{ parent.middle_name }} {{ parent.last_name }} (ID: {{ parent.id }})
+                    {% endfor %}
+                {% else %}
+                    No parent information
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</body>
+</html>
