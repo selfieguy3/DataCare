@@ -83,7 +83,6 @@
                             <th>Last Name</th>
                             <th>Age</th>
                             <th>Date of Birth</th>
-                            <th>Average Cost</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -96,7 +95,6 @@
                             <td>{{ child.last_name }}</td>
                             <td>{{ child.age }}</td>
                             <td>{{ child.date_of_birth }}</td>
-                            <td>{{ child.average_cost }}</td>
                             <td>
                                 <a href="{% url 'edit_child' child.id %}">Edit</a>
                                 <a href="{% url 'delete_child' child.id %}">Delete</a>

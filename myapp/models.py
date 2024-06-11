@@ -6,7 +6,6 @@ class Child(models.Model):
     last_name = models.CharField(max_length=100)
     age = models.IntegerField()
     date_of_birth = models.DateField()
-    average_cost = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"{self.first_name} {self.middle_name} {self.last_name} (ID: {self.id})"

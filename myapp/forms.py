@@ -4,7 +4,7 @@ from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, Pare
 class ChildForm(forms.ModelForm):
     class Meta:
         model = Child
-        fields = ['first_name', 'middle_name', 'last_name', 'age', 'date_of_birth', 'average_cost']
+        fields = ['first_name', 'middle_name', 'last_name', 'age', 'date_of_birth']
 
 class HealthRecordForm(forms.ModelForm):
     class Meta:
