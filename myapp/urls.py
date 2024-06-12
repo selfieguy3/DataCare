@@ -67,6 +67,12 @@ urlpatterns = [
      path('search_staff/', views.search_staff, name='search_staff'),
      path('search_activity_details/', views.search_activity_details, name='search_activity_details'),
      path('search_activity_by_duration/', views.search_activity_by_duration, name='search_activity_by_duration'),
+     path('is_attendance/', views.search_attendance_by_date, name='search_attendance_by_date'),
+     path('is_absent/', views.search_absent_by_date, name='search_absent_by_date'),
+     path('attendance_last_7_days/', views.attendance_last_7_days, name='attendance_last_7_days'),
+     path('absent_last_7_days/', views.absent_last_7_days, name='absent_last_7_days'),
+     path('attendance_last_30_days/', views.attendance_last_30_days, name='attendance_last_30_days'),
+     path('absent_last_30_days/', views.absent_last_30_days, name='absent_last_30_days'),
      
 ]
 

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q, F, ExpressionWrapper, fields
+from django.db.models import Q
+from django.utils import timezone
 from datetime import datetime, timedelta
 from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm, PaymentForm, ExpenseForm, OtherExpensesForm
 from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, Expense, OtherExpenses
@@ -817,14 +818,92 @@ def search_staff(request):
             staff_list = Staff.objects.all()
             staff_child_assignments = StaffChildAssignment.objects.all()
             staff_activity_assignments = StaffActivityAssignment.objects.all()
+            print(staff_list)
             context = {
-                'staff_list': staff_list,
+                'staffs': staff_list,
                 'staff_child_assignments': staff_child_assignments,
                 'staff_activity_assignments': staff_activity_assignments,
                 'invalid_staff_id_date': True
             }
+            return render(request, 'staff_list.html', context)
+            
 
     context['invalid_staff_id_date'] = True
     staff_list = Staff.objects.all()
     context['staff_list'] = staff_list
     return render(request, 'staff_list.html', context)
+
+def search_attendance_by_date(request):
+    date = request.GET.get('date')
+    context = {}
+
+    if date:
+        attendance_records = Attendance.objects.filter(date=date, is_present = True)
+        context['attendance_records'] = attendance_records
+        context['date'] = date
+        return render(request, 'attendance_result_list.html', context)
+
+    context['invalid_search'] = True
+    attendance_records = Attendance.objects.all()
+    context['attendance_records'] = attendance_records
+    return render(request, 'attendance_result_list.html', context)
+
+
+def search_absent_by_date(request):
+    date = request.GET.get('date')
+    context = {}
+
+    if date:
+        absent_records = Attendance.objects.filter(date=date, is_present=False)
+        context['absent_records'] = absent_records
+        context['date'] = date
+        return render(request, 'absent_result_list.html', context)
+
+    context['invalid_search'] = True
+    absent_records = Attendance.objects.filter(is_present=False)
+    context['absent_records'] = absent_records
+    return render(request, 'absent_result_list.html', context)
+
+def attendance_last_7_days(request):
+    today = timezone.now().date()
+    last_week = today - timedelta(days=7)
+    attendance_records = Attendance.objects.filter(date__range=[last_week, today], is_present = True)
+    context = {
+        'attendance_records': attendance_records,
+        'last_week': last_week,
+        'today': today
+    }
+    return render(request, 'attendance_last_7_days.html', context)
+
+def absent_last_7_days(request):
+    today = timezone.now().date()
+    last_week = today - timedelta(days=7)
+    absent_records = Attendance.objects.filter(date__range=[last_week, today], is_present=False)
+    context = {
+        'absent_records': absent_records,
+        'last_week': last_week,
+        'today': today
+    }
+    return render(request, 'absent_last_7_days.html', context)
+
+def attendance_last_30_days(request):
+    today = timezone.now().date()
+    last_month = today - timedelta(days=30)
+    attendance_records = Attendance.objects.filter(date__range=[last_month, today])
+    context = {
+        'attendance_records': attendance_records,
+        'last_month': last_month,
+        'today': today
+    }
+    return render(request, 'attendance_last_30_days.html', context)
+
+def absent_last_30_days(request):
+    today = timezone.now().date()
+    last_month = today - timedelta(days=30)
+    absent_records = Attendance.objects.filter(date__range=[last_month, today], is_present=False)
+    context = {
+        'absent_records': absent_records,
+        'last_month': last_month,
+        'today': today
+    }
+    return render(request, 'absent_last_30_days.html', context)
