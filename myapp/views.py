@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Sum
+import datetime
+from django.db.models import Sum, F, Q
 from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm, PaymentForm, ExpenseForm, OtherExpensesForm
 from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, Expense, OtherExpenses
 
@@ -672,3 +673,151 @@ def search_payments(request):
             context['invalid_parent_id_payments'] = True
 
     return render(request, 'search_payments_results.html', context)
+
+def search_activity_details(request):
+    activity_id = request.GET.get('activityID')
+    activity_name = request.GET.get('activityName')
+    date = request.GET.get('date')
+    context = {}
+
+    activity = None
+    invalid_activity_id = False
+    no_matching_activity_name = False
+
+    if activity_id:
+        try:
+            activity = Activity.objects.get(id=activity_id)
+        except Activity.DoesNotExist:
+            invalid_activity_id = True
+
+    if activity_name:
+        try:
+            activity_name_obj = Activity.objects.get(activity_name__iexact=activity_name)
+            if activity and activity != activity_name_obj:
+                no_matching_activity_name = True
+            else:
+                activity = activity_name_obj
+        except Activity.DoesNotExist:
+            no_matching_activity_name = True
+
+    if not invalid_activity_id and not no_matching_activity_name and activity and date:
+        context['activity'] = activity
+        context['date'] = date
+
+        supervising_staff = StaffActivityAssignment.objects.filter(activity=activity, date=date).select_related('staff')
+        context['supervising_staff'] = [assignment.staff for assignment in supervising_staff] if supervising_staff else None
+
+        attending_children = ChildActivityAssignment.objects.filter(activity=activity, date=date).select_related('child')
+        context['attending_children'] = [assignment.child for assignment in attending_children] if attending_children else None
+
+        return render(request, 'activity_details.html', context)
+
+    activities = Activity.objects.all()
+    child_activity_assignments = ChildActivityAssignment.objects.all()
+    context = {
+        'activities': activities,
+        'child_activities_assignments': child_activity_assignments,
+        'invalid_activity_id': invalid_activity_id,
+        'no_matching_activity_name': no_matching_activity_name,
+    }
+
+    return render(request, 'activity_list.html', context)
+
+def search_activity_by_duration(request):
+    date = request.GET.get('date')
+    duration = request.GET.get('duration')
+    context = {}
+
+    if date and duration:
+        # Define the duration filter using datetime.timedelta
+        if duration == "less_than_10":
+            duration_filter = {'duration__lt': datetime.timedelta(minutes=10)}
+        elif duration == "10_to_30":
+            duration_filter = {
+                'duration__gte': datetime.timedelta(minutes=10),
+                'duration__lte': datetime.timedelta(minutes=30)
+            }
+        elif duration == "more_than_30":
+            duration_filter = {'duration__gt': datetime.timedelta(minutes=30)}
+        else:
+            duration_filter = {}
+
+        if duration_filter:
+            activities = Activity.objects.filter(**duration_filter)
+        else:
+            activities = Activity.objects.none()
+
+        # Filter activities by date using the related models
+        activities = activities.filter(
+            Q(childactivityassignment__date=date)
+        ).distinct()
+
+        # Prepare the context with additional information
+        activities_info = []
+        for activity in activities:
+            supervising_staff = StaffActivityAssignment.objects.filter(activity=activity, date=date).select_related('staff')
+            attending_children = ChildActivityAssignment.objects.filter(activity=activity, date=date).select_related('child')
+            activities_info.append({
+                'activity': activity,
+                'supervising_staff': supervising_staff,
+                'attending_children': attending_children
+            })
+
+        context['activities_info'] = activities_info
+        context['date'] = date
+        context['duration'] = duration
+
+        return render(request, 'activity_duration_details.html', context)
+
+    context['invalid_search'] = True
+    activities = Activity.objects.all()
+    context['activities'] = activities
+    return render(request, 'activity_list.html', context)
+
+
+def search_staff(request):
+    staff_id = request.GET.get('staffID')
+    date = request.GET.get('date')
+    context = {}
+
+    if staff_id and date:
+        try:
+            staff = Staff.objects.get(id=staff_id)
+            context['staff'] = staff
+            context['date'] = date
+
+            try:
+                staff_activity_assignments = StaffActivityAssignment.objects.filter(staff=staff, date=date)
+                activities = []
+                for assignment in staff_activity_assignments:
+                    activities.append(assignment.activity)
+                context['activities'] = activities
+            except StaffActivityAssignment.DoesNotExist:
+                context['activities'] = None
+
+            try:
+                staff_child_assignments = StaffChildAssignment.objects.filter(staff=staff, date=date)
+                children = []
+                for assignment in staff_child_assignments:
+                    children.append(assignment.child)
+                context['children'] = children
+            except StaffChildAssignment.DoesNotExist:
+                context['children'] = None
+
+            return render(request, 'staff_activity_result.html', context)
+
+        except Staff.DoesNotExist:
+            staff_list = Staff.objects.all()
+            staff_child_assignments = StaffChildAssignment.objects.all()
+            staff_activity_assignments = StaffActivityAssignment.objects.all()
+            context = {
+                'staff_list': staff_list,
+                'staff_child_assignments': staff_child_assignments,
+                'staff_activity_assignments': staff_activity_assignments,
+                'invalid_staff_id_date': True
+            }
+
+    context['invalid_staff_id_date'] = True
+    staff_list = Staff.objects.all()
+    context['staff_list'] = staff_list
+    return render(request, 'staff_list.html', context)
