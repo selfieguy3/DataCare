@@ -111,15 +111,15 @@
             </tbody>
         </table>
         
-        <!-- Expenses Section -->
+        <!-- Child Expenses Section -->
         <h2>Child Expenses</h2>
-        <a href="{% url 'add_expense' %}" class="button">Add New Child Expense</a>
+        <a href="{% url 'add_child_expense' %}" class="button">Add New Child Expense</a>
         <table>
             <thead>
                 <tr>
-                    <th>Expense ID</th>
+                    <th>Child Expense ID</th>
                     <th>Child Name</th>
-                    <th>Activity</th>
+                    <th>Child ID</th>
                     <th>Date</th>
                     <th>Amount</th>
                     <th>Description</th>
@@ -127,17 +127,50 @@
                 </tr>
             </thead>
             <tbody>
-                {% for expense in expenses %}
+                {% for expense in child_expenses %}
                 <tr>
                     <td>{{ expense.id }}</td>
-                    <td>{% if expense.child %}{{ expense.child.first_name }} {{ expense.child.middle_name }} {{ expense.child.last_name }}{% else %}N/A{% endif %}</td>
-                    <td>{% if expense.activity %}{{ expense.activity.activity_name }}{% else %}N/A{% endif %}</td>
+                    <td>{{ expense.child.first_name }} {{ expense.child.middle_name }} {{ expense.child.last_name }}</td>
+                    <td>{{ expense.child.id }}</td>
                     <td>{{ expense.date }}</td>
                     <td>{{ expense.amount }}</td>
                     <td>{{ expense.description }}</td>
                     <td>
-                        <a href="{% url 'edit_expense' expense.pk %}">Edit</a>
-                        <a href="{% url 'delete_expense' expense.pk %}">Delete</a>
+                        <a href="{% url 'edit_child_expense' expense.pk %}">Edit</a>
+                        <a href="{% url 'delete_child_expense' expense.pk %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Activity Expenses Section -->
+        <h2>Activity Expenses</h2>
+        <a href="{% url 'add_activity_expense' %}" class="button">Add New Activity Expense</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Activity Expense ID</th>
+                    <th>Activity Name</th>
+                    <th>Activity ID</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in activity_expenses %}
+                <tr>
+                    <td>{{ expense.id }}</td>
+                    <td>{{ expense.activity.activity_name }}</td>
+                    <td>{{ expense.activity.id }}</td>
+                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.description }}</td>
+                    <td>
+                        <a href="{% url 'edit_activity_expense' expense.pk %}">Edit</a>
+                        <a href="{% url 'delete_activity_expense' expense.pk %}">Delete</a>
                     </td>
                 </tr>
                 {% endfor %}

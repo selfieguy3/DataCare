@@ -1,5 +1,5 @@
 from django import forms
-from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, OtherExpenses, Expense
+from .models import ActivityExpense, Child, ChildExpense, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, OtherExpenses
 
 class ChildForm(forms.ModelForm):
     class Meta:
@@ -74,10 +74,18 @@ class PaymentForm(forms.ModelForm):
             'payment_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
-class ExpenseForm(forms.ModelForm):
+class ChildExpenseForm(forms.ModelForm):
     class Meta:
-        model = Expense
-        fields = ['child', 'activity', 'date', 'amount', 'description']
+        model = ChildExpense
+        fields = ['child', 'date', 'amount', 'description']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
+        
+class ActivityExpenseForm(forms.ModelForm):
+    class Meta:
+        model = ActivityExpense
+        fields = ['activity', 'date', 'amount', 'description']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
         }

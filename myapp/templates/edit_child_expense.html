@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirm Delete</title>
+    <title>Edit Child Expense</title>
     <style>
         html, body {
             height: 100%;
@@ -22,7 +22,6 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: center;
         }
         form {
             display: flex;
@@ -65,13 +64,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>Confirm Delete</h1>
-        <p>Are you sure you want to delete the child expense record for {{ object.child.first_name }} {{ object.child.middle_name }} {{ object.child.last_name }} with childID {{object.child.id}} on {{ object.date }}?</p>
+        <h1>Edit Child Expense</h1>
         <form method="post">
             {% csrf_token %}
+            {{ form.as_p }}
             <div class="button-group">
-                <button type="submit">Yes, delete</button>
-                <a href="{% url 'payment_list' %}" class="button">Cancel</a>
+                <button type="submit">Save</button>
+                <a href="{% url 'payment_list' %}" class="button">Back</a>
             </div>
         </form>
     </div>
