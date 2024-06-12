@@ -476,7 +476,7 @@ def delete_other_expense(request, pk):
 
 def search_child(request):
     child_id = request.GET.get('childID')
-    health_record = None
+    # health_record = None
     context = {}
 
     if child_id:
@@ -515,16 +515,9 @@ def search_child(request):
         
         except Child.DoesNotExist:
             children = Child.objects.all()
-
             health_record = HealthRecord.objects.all()
-            context['health_record'] = health_record
-
             emergency_contacts = EmergencyContact.objects.all()
-            context['emergency_contacts'] = emergency_contacts
-
             allergies = Allergy.objects.all()
-            context['allergies'] = allergies
-
             context = {
                 'children': children,
                 'health_records': health_record,
@@ -543,3 +536,77 @@ def search_child(request):
     }
     return render(request, 'child_enrollment.html', context)
     
+def search_activity(request):
+    child_id = request.GET.get('childID')
+    date = request.GET.get('date')
+    context = {}
+
+    if child_id and date:
+        try:
+            child = Child.objects.get(id=child_id)
+            context['child'] = child
+            context['date'] = date
+
+            try:
+                activity_assignments = ChildActivityAssignment.objects.filter(child=child, date=date)
+                activities = []
+                for assignment in activity_assignments:
+                    activities.append(assignment.activity)
+                context['activities'] = activities
+            except ChildActivityAssignment.DoesNotExist:
+                context['activities'] = None
+
+            try:
+                staff_assignments = StaffChildAssignment.objects.filter(child=child, date=date)
+                staff = []
+                for assignment in staff_assignments:
+                    staff.append(assignment.staff)
+                context['staff'] = staff
+            except StaffChildAssignment.DoesNotExist:
+                context['staff'] = None
+
+            return render(request, 'child_activity_result.html', context)
+
+        except Child.DoesNotExist:
+            children = Child.objects.all()
+            health_record = HealthRecord.objects.all()
+            emergency_contacts = EmergencyContact.objects.all()
+            allergies = Allergy.objects.all()
+            context = {
+                'children': children,
+                'health_records': health_record,
+                'emergency_contacts': emergency_contacts,
+                'allergies': allergies,
+                'invalid_child_id_date': True
+            }
+
+    context['invalid_child_id_date'] = True
+    children = Child.objects.all()
+    context['children'] = children
+    return render(request, 'child_enrollment.html', context)
+
+def search_vaccine(request):
+    vaccine = request.GET.get('vaccine')
+    context = {}
+
+    if vaccine:
+        health_records = HealthRecord.objects.filter(immunizations__iexact=vaccine)
+        children = [record.child for record in health_records]
+        context['children'] = children
+        if not vaccine:
+            context['no_children'] = True
+
+    return render(request, 'search_vaccine_results.html', context)
+
+def search_condition(request):
+    condition = request.GET.get('condition')
+    context = {}
+
+    if condition:
+        health_records = HealthRecord.objects.filter(medical_conditions__iexact=condition)
+        children = [record.child for record in health_records]
+        context['children'] = children
+        if not condition:
+            context['no_children'] = True
+
+    return render(request, 'search_condition_results.html', context)
