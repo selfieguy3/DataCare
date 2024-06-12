@@ -5,33 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff List</title>
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
+        body {
             font-family: Arial, sans-serif;
             text-align: center;
             background: linear-gradient(to bottom, #e0f7fa, #80deea);
-            background-attachment: fixed;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
         }
         .container {
-            width: 80%;
+            width: 90%;
+            margin: auto;
             padding: 20px;
         }
-        h1, h2, h3, h4 {
-            margin: 20px 0;
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #00796b;
+            margin-top: 40px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .table-container {
+            overflow-x: auto;
         }
         table {
             width: 100%;
-            margin: 20px 0;
             border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
         th, td {
             padding: 12px;
@@ -40,58 +46,62 @@
         }
         th {
             background-color: #80deea;
+            color: white;
         }
-        a.button {
-            display: inline-block;
-            margin: 10px 0;
+        td {
+            background-color: #f9f9f9;
+        }
+        .button {
             padding: 10px 20px;
             background-color: #e0f7fa;
             border: 2px solid #80deea;
             border-radius: 5px;
             text-decoration: none;
             color: #00796b;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s, color 0.3s;
         }
-        a.button:hover {
+        .button:hover {
             background-color: #80deea;
             color: #004d40;
         }
         .back-button {
             position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-        .back-button a {
-            display: block;
-            padding: 10px 20px;
-            background-color: #e0f7fa;
-            border: 2px solid #80deea;
-            border-radius: 5px;
-            text-decoration: none;
-            color: #00796b;
-        }
-        .back-button a:hover {
-            background-color: #80deea;
-            color: #004d40;
+            top: 20px;
+            left: 20px;
         }
         .search-bar {
             margin-top: 20px;
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             justify-content: center;
+        }
+        .search-bar label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #00796b;
         }
         .search-bar input {
             padding: 10px;
             font-size: 16px;
             margin-left: 10px;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        .search-bar input:focus {
+            border-color: #004d40;
         }
         .search-bar button {
             padding: 10px 20px;
             font-size: 16px;
             background-color: #80deea;
             border: none;
-            color: #004d40;
+            color: white;
             cursor: pointer;
             margin-left: 10px;
+            transition: background-color 0.3s, color 0.3s;
         }
         .search-bar button:hover {
             background-color: #004d40;
@@ -105,127 +115,146 @@
     </style>
 </head>
 <body>
-    <div class="back-button">
-        <a href="{% url 'home' %}" class="button">&larr;</a>
-    </div>
     <div class="container">
+        <div class="back-button">
+            <a href="{% url 'home' %}" class="button">&larr; Back</a>
+        </div>
         <h1>Staff Management</h1>
 
-        <div class="search-bar">
-            <label for="search-staffID">Search activities and children by StaffID</label>
-            <form method="GET" action="{% url 'search_staff' %}">
-                <input type="text" id="search-staffID" name="staffID" placeholder="Staff ID" required>
-                <input type="date" name="date" placeholder="Date" required>
-                <button type="submit">Search</button>
-            </form>
-            {% if invalid_staff_id_date %}
-            <div class="message">Invalid Staff ID</div>
-            {% endif %}
+        <!-- Search by Staff ID -->
+        <div class="section">
+            <label for="search-staffID">Search activities and children by Staff ID</label>
+            <div class="search-bar">
+                <form method="GET" action="{% url 'search_staff' %}">
+                    <input type="text" id="search-staffID" name="staffID" placeholder="Staff ID" required>
+                    <input type="text" id="search-first-name" name="first_name" placeholder="First Name" required>
+                    <input type="text" id="search-middle-name" name="middle_name" placeholder="Middle Name" required>
+                    <input type="text" id="search-last-name" name="last_name" placeholder="Last Name" required>
+                    <input type="date" name="date" placeholder="Date" required>
+                    <button type="submit">Search</button>
+                </form>
+                {% if invalid_staff_id_date %}
+                <div class="message">Invalid Staff ID or Name</div>
+                {% endif %}
+            </div>
         </div>
 
-        <h2>Staff List</h2>
-        <a href="{% url 'staff_add' %}" class="button">Add New Staff Member</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Staff ID</th>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Last Name</th>
-                    <th>Age</th>
-                    <th>Phone Number</th>
-                    <th>Street Address</th>
-                    <th>City</th>
-                    <th>Zip Code</th>
-                    <th>State</th>
-                    <th>Email</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for staff in staffs %}
-                <tr>
-                    <td>{{ staff.id }}</td>
-                    <td>{{ staff.first_name }}</td>
-                    <td>{{ staff.middle_name }}</td>
-                    <td>{{ staff.last_name }}</td>
-                    <td>{{ staff.age }}</td>
-                    <td>{{ staff.phone_number }}</td>
-                    <td>{{ staff.street_address }}</td>
-                    <td>{{ staff.city }}</td>
-                    <td>{{ staff.zip_code }}</td>
-                    <td>{{ staff.state }}</td>
-                    <td>{{ staff.email }}</td>
-                    <td>
-                        <a href="{% url 'staff_edit' staff.pk %}">Edit</a>
-                        <a href="{% url 'staff_delete' staff.pk %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- Staff List Section -->
+        <div class="section">
+            <h2>Staff List</h2>
+            <a href="{% url 'staff_add' %}" class="button">Add New Staff Member</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Staff ID</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Phone Number</th>
+                            <th>Street Address</th>
+                            <th>City</th>
+                            <th>Zip Code</th>
+                            <th>State</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for staff in staffs %}
+                        <tr>
+                            <td>{{ staff.id }}</td>
+                            <td>{{ staff.first_name }}</td>
+                            <td>{{ staff.middle_name }}</td>
+                            <td>{{ staff.last_name }}</td>
+                            <td>{{ staff.age }}</td>
+                            <td>{{ staff.phone_number }}</td>
+                            <td>{{ staff.street_address }}</td>
+                            <td>{{ staff.city }}</td>
+                            <td>{{ staff.zip_code }}</td>
+                            <td>{{ staff.state }}</td>
+                            <td>{{ staff.email }}</td>
+                            <td>
+                                <a href="{% url 'staff_edit' staff.pk %}">Edit</a>
+                                <a href="{% url 'staff_delete' staff.pk %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <!-- Staff-Child Assignments Section -->
-        <h3>Staff-Child Assignments</h3>
-        <a href="{% url 'assign_staff_child' %}" class="button">Assign Staff to Child</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Staff Name</th>
-                    <th>Staff ID</th>
-                    <th>Child Name</th>
-                    <th>Child ID</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for assignment in staff_child_assignments %}
-                <tr>
-                    <td>{{ assignment.staff.first_name }} {{ assignment.staff.middle_name }} {{ assignment.staff.last_name }}</td>
-                    <td>{{ assignment.staff.id }}</td>
-                    <td>{{ assignment.child.first_name }} {{ assignment.child.middle_name }} {{ assignment.child.last_name }}</td>
-                    <td>{{ assignment.child.id }}</td>
-                    <td>{{ assignment.date }}</td>
-                    <td>
-                        <a href="{% url 'edit_staff_child_assignment' assignment.id %}">Edit</a>
-                        <a href="{% url 'delete_staff_child_assignment' assignment.id %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="section">
+            <h2>Staff-Child Assignments</h2>
+            <a href="{% url 'assign_staff_child' %}" class="button">Assign Staff to Child</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Staff Name</th>
+                            <th>Staff ID</th>
+                            <th>Child Name</th>
+                            <th>Child ID</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assignment in staff_child_assignments %}
+                        <tr>
+                            <td>{{ assignment.staff.first_name }} {{ assignment.staff.middle_name }} {{ assignment.staff.last_name }}</td>
+                            <td>{{ assignment.staff.id }}</td>
+                            <td>{{ assignment.child.first_name }} {{ assignment.child.middle_name }} {{ assignment.child.last_name }}</td>
+                            <td>{{ assignment.child.id }}</td>
+                            <td>{{ assignment.date }}</td>
+                            <td>
+                                <a href="{% url 'edit_staff_child_assignment' assignment.id %}">Edit</a>
+                                <a href="{% url 'delete_staff_child_assignment' assignment.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <!-- Staff-Activity Assignments Section -->
-        <h4>Staff-Activity Assignments</h4>
-        <a href="{% url 'assign_staff_activity' %}" class="button">Assign Staff to Activity</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Staff Name</th>
-                    <th>Staff ID</th>
-                    <th>Activity Name</th>
-                    <th>Activity ID</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for assignment in staff_activity_assignments %}
-                <tr>
-                    <td>{{ assignment.staff.first_name }} {{ assignment.staff.middle_name }} {{ assignment.staff.last_name }}</td>
-                    <td>{{ assignment.staff.id }}</td>
-                    <td>{{ assignment.activity.activity_name }}</td>
-                    <td>{{ assignment.activity.id }}</td>
-                    <td>{{ assignment.date }}</td>
-                    <td>
-                        <a href="{% url 'edit_staff_activity_assignment' assignment.id %}">Edit</a>
-                        <a href="{% url 'delete_staff_activity_assignment' assignment.id %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="section">
+            <h2>Staff-Activity Assignments</h2>
+            <a href="{% url 'assign_staff_activity' %}" class="button">Assign Staff to Activity</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Staff Name</th>
+                            <th>Staff ID</th>
+                            <th>Activity Name</th>
+                            <th>Activity ID</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for assignment in staff_activity_assignments %}
+                        <tr>
+                            <td>{{ assignment.staff.first_name }} {{ assignment.staff.middle_name }} {{ assignment.staff.last_name }}</td>
+                            <td>{{ assignment.staff.id }}</td>
+                            <td>{{ assignment.activity.activity_name }}</td>
+                            <td>{{ assignment.activity.id }}</td>
+                            <td>{{ assignment.date }}</td>
+                            <td>
+                                <a href="{% url 'edit_staff_activity_assignment' assignment.id %}">Edit</a>
+                                <a href="{% url 'delete_staff_activity_assignment' assignment.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </body>
 </html>
