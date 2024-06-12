@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.utils import timezone
 from datetime import datetime, timedelta
 from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm, PaymentForm, OtherExpensesForm, ActivityExpenseForm, ChildExpenseForm
@@ -509,90 +509,90 @@ def delete_other_expense(request, pk):
 
 def search_child(request):
     child_id = request.GET.get('childID')
+    first_name = request.GET.get('first_name')
+    middle_name = request.GET.get('middle_name')
+    last_name = request.GET.get('last_name')
     context = {}
 
-    if child_id:
+    if child_id and first_name and last_name:
         try:
-            child = Child.objects.get(id=child_id)
+            child = Child.objects.get(
+                id=child_id,
+                first_name__iexact=first_name,
+                middle_name__iexact=middle_name,
+                last_name__iexact=last_name
+            )
             context["child"] = child
 
             try:
-                health_record = HealthRecord.objects.get(child = child)
+                health_record = HealthRecord.objects.get(child=child)
                 context['health_record'] = health_record
             except HealthRecord.DoesNotExist:
                 context['health_record'] = None
 
             try:
-             emergency_contacts = EmergencyContact.objects.filter(child=child)
-             context['emergency_contacts'] = emergency_contacts
+                emergency_contacts = EmergencyContact.objects.filter(child=child)
+                context['emergency_contacts'] = emergency_contacts
             except EmergencyContact.DoesNotExist:
                 context['emergency_contacts'] = None
-            
+
             try:
-             allergies = Allergy.objects.filter(child=child)
-             context['allergies'] = allergies
+                allergies = Allergy.objects.filter(child=child)
+                context['allergies'] = allergies
             except Allergy.DoesNotExist:
                 context['allergies'] = None
 
             try:
-             relationships = ParentChildRelationship.objects.filter(child=child)
-             parents = []
-             for relationship in relationships:
-                parents.append(relationship.parent)
-             context['parents'] = parents
+                relationships = ParentChildRelationship.objects.filter(child=child)
+                parents = []
+                for relationship in relationships:
+                    parents.append(relationship.parent)
+                context['parents'] = parents
             except ParentChildRelationship.DoesNotExist:
                 context['parents'] = None
 
             return render(request, 'child_detail.html', context)
-        
+
         except Child.DoesNotExist:
-            children = Child.objects.all()
-            health_record = HealthRecord.objects.all()
-            emergency_contacts = EmergencyContact.objects.all()
-            allergies = Allergy.objects.all()
-            context = {
-                'children': children,
-                'health_records': health_record,
-                'emergency_contacts': emergency_contacts,
-                'allergies': allergies,
-                'invalid_child_id': True
-            }
-            return render(request, 'child_enrollment.html', context)
-            
-    context = {
-        'children': children,
-        'health_record': health_record,
-        'emergency_contacts': emergency_contacts,
-        'allergies': allergies,
-        'parents': parents
-    }
+            context['invalid_child_id'] = True
+
+    context['children'] = Child.objects.all()
+    context['health_records'] = HealthRecord.objects.all()
+    context['emergency_contacts'] = EmergencyContact.objects.all()
+    context['allergies'] = Allergy.objects.all()
+    context['parents'] = ParentChildRelationship.objects.all()
     return render(request, 'child_enrollment.html', context)
+
     
 def search_activity(request):
     child_id = request.GET.get('childID')
+    first_name = request.GET.get('first_name')
+    middle_name = request.GET.get('middle_name')
+    last_name = request.GET.get('last_name')
     date = request.GET.get('date')
     context = {}
 
-    if child_id and date:
+    if child_id and first_name and last_name and date:
         try:
-            child = Child.objects.get(id=child_id)
+            child = Child.objects.get(
+                id=child_id,
+                first_name__iexact=first_name,
+                middle_name__iexact=middle_name,
+                last_name__iexact=last_name
+            )
             context['child'] = child
             context['date'] = date
 
             try:
                 activity_assignments = ChildActivityAssignment.objects.filter(child=child, date=date)
-                activities = []
-                for assignment in activity_assignments:
-                    activities.append(assignment.activity)
+                activities = [assignment.activity for assignment in activity_assignments]
                 context['activities'] = activities
             except ChildActivityAssignment.DoesNotExist:
                 context['activities'] = None
 
             try:
                 staff_assignments = StaffChildAssignment.objects.filter(child=child, date=date)
-                staff = []
-                for assignment in staff_assignments:
-                    staff.append(assignment.staff)
+                staff = [assignment.staff for assignment in staff_assignments]
                 context['staff'] = staff
             except StaffChildAssignment.DoesNotExist:
                 context['staff'] = None
@@ -600,21 +600,12 @@ def search_activity(request):
             return render(request, 'child_activity_result.html', context)
 
         except Child.DoesNotExist:
-            children = Child.objects.all()
-            health_record = HealthRecord.objects.all()
-            emergency_contacts = EmergencyContact.objects.all()
-            allergies = Allergy.objects.all()
-            context = {
-                'children': children,
-                'health_records': health_record,
-                'emergency_contacts': emergency_contacts,
-                'allergies': allergies,
-                'invalid_child_id_date': True
-            }
+            context['invalid_child_id_date'] = True
 
-    context['invalid_child_id_date'] = True
-    children = Child.objects.all()
-    context['children'] = children
+    context['children'] = Child.objects.all()
+    context['health_records'] = HealthRecord.objects.all()
+    context['emergency_contacts'] = EmergencyContact.objects.all()
+    context['allergies'] = Allergy.objects.all()
     return render(request, 'child_enrollment.html', context)
 
 def search_vaccine(request):
@@ -671,11 +662,19 @@ def search_emergency_id(request):
 
 def search_parent(request):
     parent_id = request.GET.get('parentID')
+    first_name = request.GET.get('first_name')
+    middle_name = request.GET.get('middle_name')
+    last_name = request.GET.get('last_name')
     context = {}
 
-    if parent_id:
+    if parent_id and first_name and last_name:
         try:
-            parent = Parent.objects.get(id=parent_id)
+            parent = Parent.objects.get(
+                id=parent_id,
+                first_name__iexact=first_name,
+                middle_name__iexact=middle_name,
+                last_name__iexact=last_name
+            )
             relationships = ParentChildRelationship.objects.filter(parent=parent)
             children = [relationship.child for relationship in relationships]
             context['children'] = children
@@ -686,13 +685,22 @@ def search_parent(request):
 
     return render(request, 'search_parent_results.html', context)
 
+
 def search_payments(request):
     parent_id = request.GET.get('parentID')
+    first_name = request.GET.get('first_name')
+    middle_name = request.GET.get('middle_name')
+    last_name = request.GET.get('last_name')
     context = {}
 
-    if parent_id:
+    if parent_id and first_name and last_name:
         try:
-            parent = Parent.objects.get(id=parent_id)
+            parent = Parent.objects.get(
+                id=parent_id,
+                first_name__iexact=first_name,
+                middle_name__iexact=middle_name,
+                last_name__iexact=last_name
+            )
             payments = Payment.objects.filter(parent=parent)
             total_amount = payments.aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
             context['payments'] = payments
@@ -814,29 +822,33 @@ def search_activity_by_duration(request):
 
 def search_staff(request):
     staff_id = request.GET.get('staffID')
+    first_name = request.GET.get('first_name')
+    middle_name = request.GET.get('middle_name')
+    last_name = request.GET.get('last_name')
     date = request.GET.get('date')
     context = {}
 
-    if staff_id and date:
+    if staff_id and first_name and last_name and date:
         try:
-            staff = Staff.objects.get(id=staff_id)
+            staff = Staff.objects.get(
+                id=staff_id,
+                first_name__iexact=first_name,
+                middle_name__iexact=middle_name,
+                last_name__iexact=last_name
+            )
             context['staff'] = staff
             context['date'] = date
 
             try:
                 staff_activity_assignments = StaffActivityAssignment.objects.filter(staff=staff, date=date)
-                activities = []
-                for assignment in staff_activity_assignments:
-                    activities.append(assignment.activity)
+                activities = [assignment.activity for assignment in staff_activity_assignments]
                 context['activities'] = activities
             except StaffActivityAssignment.DoesNotExist:
                 context['activities'] = None
 
             try:
                 staff_child_assignments = StaffChildAssignment.objects.filter(staff=staff, date=date)
-                children = []
-                for assignment in staff_child_assignments:
-                    children.append(assignment.child)
+                children = [assignment.child for assignment in staff_child_assignments]
                 context['children'] = children
             except StaffChildAssignment.DoesNotExist:
                 context['children'] = None
@@ -844,23 +856,22 @@ def search_staff(request):
             return render(request, 'staff_activity_result.html', context)
 
         except Staff.DoesNotExist:
-            staff_list = Staff.objects.all()
-            staff_child_assignments = StaffChildAssignment.objects.all()
-            staff_activity_assignments = StaffActivityAssignment.objects.all()
-            print(staff_list)
-            context = {
-                'staffs': staff_list,
-                'staff_child_assignments': staff_child_assignments,
-                'staff_activity_assignments': staff_activity_assignments,
-                'invalid_staff_id_date': True
-            }
-            return render(request, 'staff_list.html', context)
-            
+            context['invalid_staff_id_date'] = True
 
-    context['invalid_staff_id_date'] = True
+    else:
+        context['invalid_staff_id_date'] = True
+
     staff_list = Staff.objects.all()
-    context['staff_list'] = staff_list
+    staff_child_assignments = StaffChildAssignment.objects.all()
+    staff_activity_assignments = StaffActivityAssignment.objects.all()
+    context.update({
+        'staffs': staff_list,
+        'staff_child_assignments': staff_child_assignments,
+        'staff_activity_assignments': staff_activity_assignments
+    })
+
     return render(request, 'staff_list.html', context)
+
 
 def search_attendance_by_date(request):
     date = request.GET.get('date')

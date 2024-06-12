@@ -5,42 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parent Information & Relationships</title>
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
+        body {
             font-family: Arial, sans-serif;
             text-align: center;
             background: linear-gradient(to bottom, #e0f7fa, #80deea);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding-top: 20px;
-        }
-        .outer-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            position: relative;
         }
         .container {
-            width: 80%;
+            width: 90%;
+            margin: auto;
             padding: 20px;
-            box-sizing: border-box;
         }
-        h1, h2, h3 {
-            margin: 20px 0;
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #00796b;
+            margin-top: 40px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .table-container {
+            overflow-x: auto;
         }
         table {
             width: 100%;
-            margin: 20px 0;
             border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
         th, td {
             padding: 12px;
@@ -49,58 +46,62 @@
         }
         th {
             background-color: #80deea;
+            color: white;
         }
-        a.button {
-            display: inline-block;
-            margin: 10px 0;
+        td {
+            background-color: #f9f9f9;
+        }
+        .button {
             padding: 10px 20px;
             background-color: #e0f7fa;
             border: 2px solid #80deea;
             border-radius: 5px;
             text-decoration: none;
             color: #00796b;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s, color 0.3s;
         }
-        a.button:hover {
+        .button:hover {
             background-color: #80deea;
             color: #004d40;
         }
         .back-button {
-            position: fixed;
+            position: absolute;
             top: 20px;
             left: 20px;
-        }
-        .back-button a {
-            display: block;
-            padding: 10px 20px;
-            background-color: #e0f7fa;
-            border: 2px solid #80deea;
-            border-radius: 5px;
-            text-decoration: none;
-            color: #00796b;
-        }
-        .back-button a:hover {
-            background-color: #80deea;
-            color: #004d40;
         }
         .search-bar {
             margin-top: 20px;
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             justify-content: center;
+        }
+        .search-bar label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #00796b;
         }
         .search-bar input {
             padding: 10px;
             font-size: 16px;
             margin-left: 10px;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        .search-bar input:focus {
+            border-color: #004d40;
         }
         .search-bar button {
             padding: 10px 20px;
             font-size: 16px;
             background-color: #80deea;
             border: none;
-            color: #004d40;
+            color: white;
             cursor: pointer;
             margin-left: 10px;
+            transition: background-color 0.3s, color 0.3s;
         }
         .search-bar button:hover {
             background-color: #004d40;
@@ -114,108 +115,124 @@
     </style>
 </head>
 <body>
-    <div class="back-button">
-        <a href="{% url 'home' %}" class="button">&larr;</a>
-    </div>
-    <div class="outer-container">
-        <div class="container">
-            <h1>Parent Information & Relationships</h1>
+    <div class="container">
+        <div class="back-button">
+            <a href="{% url 'home' %}" class="button">&larr; Back</a>
+        </div>
+        <h1>Parent Information & Relationships</h1>
 
-            <!-- Search by Parent ID -->
+        <!-- Search by Parent ID -->
+        <div class="section">
+            <label for="search-parentID">Search Children by Parent ID</label>
             <div class="search-bar">
-                <label for="search-parentID">Search Children by Parent ID</label>
                 <form method="GET" action="{% url 'search_parent' %}">
                     <input type="text" id="search-parentID" name="parentID" placeholder="Parent ID" required>
+                    <input type="text" id="search-first-name" name="first_name" placeholder="First Name" required>
+                    <input type="text" id="search-middle-name" name="middle_name" placeholder="Middle Name" required>
+                    <input type="text" id="search-last-name" name="last_name" placeholder="Last Name" required>
                     <button type="submit">Search</button>
                 </form>
                 {% if invalid_parent_id %}
-                <div class="message">Invalid Parent ID</div>
+                <div class="message">Invalid Parent ID or Name</div>
                 {% endif %}
             </div>
+        </div>
 
-            <!-- Search by Parent ID for Payments -->
+        <!-- Search by Parent ID for Payments -->
+        <div class="section">
+            <label for="search-parentID-payments">Search Payments by Parent ID</label>
             <div class="search-bar">
-                <label for="search-parentID-payments">Search Payments by Parent ID</label>
                 <form method="GET" action="{% url 'search_payments' %}">
                     <input type="text" id="search-parentID-payments" name="parentID" placeholder="Parent ID" required>
+                    <input type="text" id="search-first-name" name="first_name" placeholder="First Name" required>
+                    <input type="text" id="search-middle-name" name="middle_name" placeholder="Middle Name" required>
+                    <input type="text" id="search-last-name" name="last_name" placeholder="Last Name" required>
                     <button type="submit">Search</button>
                 </form>
                 {% if invalid_parent_id_payments %}
-                <div class="message">Invalid Parent ID</div>
+                <div class="message">Invalid Parent ID or Name</div>
                 {% endif %}
             </div>
+        </div>
 
-            <!-- Parent Information Section -->
+        <!-- Parent Information Section -->
+        <div class="section">
             <h2>Parent List</h2>
             <a href="{% url 'add_parent' %}" class="button">Add New Parent</a>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Parent ID</th>
-                        <th>First Name</th>
-                        <th>Middle Name</th>
-                        <th>Last Name</th>
-                        <th>Age</th>
-                        <th>Phone Number</th>
-                        <th>Street Address</th>
-                        <th>City</th>
-                        <th>Zip Code</th>
-                        <th>State</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for parent in parents %}
-                    <tr>
-                        <td>{{ parent.id }}</td>
-                        <td>{{ parent.first_name }}</td>
-                        <td>{{ parent.middle_name }}</td>
-                        <td>{{ parent.last_name }}</td>
-                        <td>{{ parent.age }}</td>
-                        <td>{{ parent.phone_number }}</td>
-                        <td>{{ parent.street_address }}</td>
-                        <td>{{ parent.city }}</td>
-                        <td>{{ parent.zip_code }}</td>
-                        <td>{{ parent.state }}</td>
-                        <td>{{ parent.email }}</td>
-                        <td>
-                            <a href="{% url 'edit_parent' parent.id %}">Edit</a>
-                            <a href="{% url 'delete_parent' parent.id %}">Delete</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parent ID</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Age</th>
+                            <th>Phone Number</th>
+                            <th>Street Address</th>
+                            <th>City</th>
+                            <th>Zip Code</th>
+                            <th>State</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for parent in parents %}
+                        <tr>
+                            <td>{{ parent.id }}</td>
+                            <td>{{ parent.first_name }}</td>
+                            <td>{{ parent.middle_name }}</td>
+                            <td>{{ parent.last_name }}</td>
+                            <td>{{ parent.age }}</td>
+                            <td>{{ parent.phone_number }}</td>
+                            <td>{{ parent.street_address }}</td>
+                            <td>{{ parent.city }}</td>
+                            <td>{{ parent.zip_code }}</td>
+                            <td>{{ parent.state }}</td>
+                            <td>{{ parent.email }}</td>
+                            <td>
+                                <a href="{% url 'edit_parent' parent.id %}">Edit</a>
+                                <a href="{% url 'delete_parent' parent.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-            <!-- Parent-Child Relationships Section -->
+        <!-- Parent-Child Relationships Section -->
+        <div class="section">
             <h2>Parent-Child Relationships</h2>
             <a href="{% url 'assign_child' %}" class="button">Assign Children to Parent</a>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Parent Name</th>
-                        <th>Parent ID</th>
-                        <th>Child Name</th>
-                        <th>Child ID</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for relationship in relationships %}
-                    <tr>
-                        <td>{{ relationship.parent.first_name }} {{ relationship.parent.middle_name }} {{ relationship.parent.last_name }}</td>
-                        <td>{{ relationship.parent.id }}</td>
-                        <td>{{ relationship.child.first_name }} {{ relationship.child.middle_name }} {{ relationship.child.last_name }}</td>
-                        <td>{{ relationship.child.id }}</td>
-                        <td>
-                            <a href="{% url 'edit_relationship' relationship.id %}">Edit</a>
-                            <a href="{% url 'delete_relationship' relationship.id %}">Delete</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parent Name</th>
+                            <th>Parent ID</th>
+                            <th>Child Name</th>
+                            <th>Child ID</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for relationship in relationships %}
+                        <tr>
+                            <td>{{ relationship.parent.first_name }} {{ relationship.parent.middle_name }} {{ relationship.parent.last_name }}</td>
+                            <td>{{ relationship.parent.id }}</td>
+                            <td>{{ relationship.child.first_name }} {{ relationship.child.middle_name }} {{ relationship.child.last_name }}</td>
+                            <td>{{ relationship.child.id }}</td>
+                            <td>
+                                <a href="{% url 'edit_relationship' relationship.id %}">Edit</a>
+                                <a href="{% url 'delete_relationship' relationship.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>

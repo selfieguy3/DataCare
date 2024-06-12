@@ -12,22 +12,43 @@
             font-family: Arial, sans-serif;
             text-align: center;
             background: linear-gradient(to bottom, #e0f7fa, #80deea);
-            /* Ensure the gradient covers the full height */
+            background-repeat: no-repeat;
             background-attachment: fixed;
+            background-size: cover;
         }
-        .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 20px;
         }
         .container {
+            width: 90%;
+            margin: auto;
             padding: 20px;
-            margin-top: 50px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #00796b;
+            margin-top: 40px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .table-container {
+            overflow-x: auto;
         }
         table {
-            width: 80%;
-            margin: auto;
+            width: 100%;
             border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
         th, td {
             padding: 12px;
@@ -36,175 +57,224 @@
         }
         th {
             background-color: #80deea;
+            color: white;
         }
-        a.button {
-            display: inline-block;
-            margin: 10px 0;
+        td {
+            background-color: #f9f9f9;
+        }
+        .button {
             padding: 10px 20px;
             background-color: #e0f7fa;
             border: 2px solid #80deea;
             border-radius: 5px;
             text-decoration: none;
             color: #00796b;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s, color 0.3s;
         }
-        a.button:hover {
+        .button:hover {
             background-color: #80deea;
             color: #004d40;
         }
-        form.inline {
-            display: inline;
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
-        button.inline {
-            display: inline-block;
-            margin: 0;
-            padding: 10px 20px;
-            background-color: #e0f7fa;
+        .search-bar {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .search-bar label {
+            font-weight: normal;
+            color: #00796b;
+        }
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            margin-left: 10px;
             border: 2px solid #80deea;
             border-radius: 5px;
-            color: #00796b;
-            cursor: pointer;
+            transition: border-color 0.3s;
         }
-        button.inline:hover {
+        .search-bar input:focus {
+            border-color: #004d40;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            font-size: 16px;
             background-color: #80deea;
-            color: #004d40;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: #004d40;
+            color: white;
+        }
+        .message {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="back-button">
-        <a href="{% url 'home' %}" class="button">&larr;</a>
-    </div>
-
     <div class="container">
+        <div class="back-button">
+            <a href="{% url 'home' %}" class="button">&larr; Back</a>
+        </div>
         <h1>Financial Overview</h1>
-        
+
         <!-- Payments Section -->
-        <h2>Payments</h2>
-        <a href="{% url 'add_payment' %}" class="button">Add New Payment</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Payment ID</th>
-                    <th>Parent Name</th>
-                    <th>Parent ID</th>
-                    <th>Amount Paid</th>
-                    <th>Payment Method</th>
-                    <th>Payment Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for payment in payments %}
-                <tr>
-                    <td>{{ payment.id }}</td>
-                    <td>{{ payment.parent.first_name }} {{ payment.parent.middle_name }} {{ payment.parent.last_name }}</td>
-                    <td>{{ payment.parent.id }}</td>
-                    <td>{{ payment.amount_paid }}</td>
-                    <td>{{ payment.payment_method }}</td>
-                    <td>{{ payment.payment_date }}</td>
-                    <td>
-                        <a href="{% url 'edit_payment' payment.pk %}">Edit</a>
-                        <a href="{% url 'delete_payment' payment.pk %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
+        <div class="section">
+            <h2>Payments</h2>
+            <a href="{% url 'add_payment' %}" class="button">Add New Payment</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Parent Name</th>
+                            <th>Parent ID</th>
+                            <th>Amount Paid</th>
+                            <th>Payment Method</th>
+                            <th>Payment Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in payments %}
+                        <tr>
+                            <td>{{ payment.id }}</td>
+                            <td>{{ payment.parent.first_name }} {{ payment.parent.middle_name }} {{ payment.parent.last_name }}</td>
+                            <td>{{ payment.parent.id }}</td>
+                            <td>{{ payment.amount_paid }}</td>
+                            <td>{{ payment.payment_method }}</td>
+                            <td>{{ payment.payment_date }}</td>
+                            <td>
+                                <a href="{% url 'edit_payment' payment.pk %}">Edit</a>
+                                <a href="{% url 'delete_payment' payment.pk %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- Child Expenses Section -->
-        <h2>Child Expenses</h2>
-        <a href="{% url 'add_child_expense' %}" class="button">Add New Child Expense</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Child Expense ID</th>
-                    <th>Child Name</th>
-                    <th>Child ID</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for expense in child_expenses %}
-                <tr>
-                    <td>{{ expense.id }}</td>
-                    <td>{{ expense.child.first_name }} {{ expense.child.middle_name }} {{ expense.child.last_name }}</td>
-                    <td>{{ expense.child.id }}</td>
-                    <td>{{ expense.date }}</td>
-                    <td>{{ expense.amount }}</td>
-                    <td>{{ expense.description }}</td>
-                    <td>
-                        <a href="{% url 'edit_child_expense' expense.pk %}">Edit</a>
-                        <a href="{% url 'delete_child_expense' expense.pk %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="section">
+            <h2>Child Expenses</h2>
+            <a href="{% url 'add_child_expense' %}" class="button">Add New Child Expense</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Child Expense ID</th>
+                            <th>Child Name</th>
+                            <th>Child ID</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in child_expenses %}
+                        <tr>
+                            <td>{{ expense.id }}</td>
+                            <td>{{ expense.child.first_name }} {{ expense.child.middle_name }} {{ expense.child.last_name }}</td>
+                            <td>{{ expense.child.id }}</td>
+                            <td>{{ expense.date }}</td>
+                            <td>{{ expense.amount }}</td>
+                            <td>{{ expense.description }}</td>
+                            <td>
+                                <a href="{% url 'edit_child_expense' expense.pk %}">Edit</a>
+                                <a href="{% url 'delete_child_expense' expense.pk %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <!-- Activity Expenses Section -->
-        <h2>Activity Expenses</h2>
-        <a href="{% url 'add_activity_expense' %}" class="button">Add New Activity Expense</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Activity Expense ID</th>
-                    <th>Activity Name</th>
-                    <th>Activity ID</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for expense in activity_expenses %}
-                <tr>
-                    <td>{{ expense.id }}</td>
-                    <td>{{ expense.activity.activity_name }}</td>
-                    <td>{{ expense.activity.id }}</td>
-                    <td>{{ expense.date }}</td>
-                    <td>{{ expense.amount }}</td>
-                    <td>{{ expense.description }}</td>
-                    <td>
-                        <a href="{% url 'edit_activity_expense' expense.pk %}">Edit</a>
-                        <a href="{% url 'delete_activity_expense' expense.pk %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="section">
+            <h2>Activity Expenses</h2>
+            <a href="{% url 'add_activity_expense' %}" class="button">Add New Activity Expense</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Activity Expense ID</th>
+                            <th>Activity Name</th>
+                            <th>Activity ID</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for expense in activity_expenses %}
+                        <tr>
+                            <td>{{ expense.id }}</td>
+                            <td>{{ expense.activity.activity_name }}</td>
+                            <td>{{ expense.activity.id }}</td>
+                            <td>{{ expense.date }}</td>
+                            <td>{{ expense.amount }}</td>
+                            <td>{{ expense.description }}</td>
+                            <td>
+                                <a href="{% url 'edit_activity_expense' expense.pk %}">Edit</a>
+                                <a href="{% url 'delete_activity_expense' expense.pk %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <!-- Other Expenses Section -->
-        <h2>Other Expenses</h2>
-        <a href="{% url 'add_other_expense' %}" class="button">Add New Other Expense</a>
-        <table>
-            <thead>
-                <tr>
-                    <th>Other Expense ID</th>
-                    <th>Name</th>
-                    <th>Cost</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for other_expense in other_expenses %}
-                <tr>
-                    <td>{{ other_expense.id }}</td>
-                    <td>{{ other_expense.name }}</td>
-                    <td>{{ other_expense.cost }}</td>
-                    <td>{{ other_expense.description }}</td>
-                    <td>
-                        <a href="{% url 'edit_other_expense' other_expense.pk %}">Edit</a>
-                        <a href="{% url 'delete_other_expense' other_expense.pk %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="section">
+            <h2>Other Expenses</h2>
+            <a href="{% url 'add_other_expense' %}" class="button">Add New Other Expense</a>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Other Expense ID</th>
+                            <th>Name</th>
+                            <th>Cost</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for other_expense in other_expenses %}
+                        <tr>
+                            <td>{{ other_expense.id }}</td>
+                            <td>{{ other_expense.name }}</td>
+                            <td>{{ other_expense.cost }}</td>
+                            <td>{{ other_expense.description }}</td>
+                            <td>
+                                <a href="{% url 'edit_other_expense' other_expense.pk %}">Edit</a>
+                                <a href="{% url 'delete_other_expense' other_expense.pk %}">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </body>
 </html>

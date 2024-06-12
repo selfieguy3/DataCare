@@ -5,35 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Records</title>
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
+        body {
             font-family: Arial, sans-serif;
             text-align: center;
             background: linear-gradient(to bottom, #e0f7fa, #80deea);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            height: 100vh;
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            min-height: 100vh;
             padding-top: 20px;
         }
         .container {
-            width: 80%;
+            width: 90%;
+            margin: auto;
             padding: 20px;
             box-sizing: border-box;
         }
-        h1, h2 {
-            margin: 20px 0;
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #00796b;
+            margin-top: 40px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .table-container {
+            overflow-x: auto;
         }
         table {
             width: 100%;
-            margin: 20px 0;
             border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
         }
         th, td {
             padding: 12px;
@@ -42,123 +53,139 @@
         }
         th {
             background-color: #80deea;
+            color: white;
         }
-        a.button {
-            display: inline-block;
-            margin: 10px 10px 10px 0;
+        td {
+            background-color: #f9f9f9;
+        }
+        .button {
             padding: 10px 20px;
             background-color: #e0f7fa;
             border: 2px solid #80deea;
             border-radius: 5px;
             text-decoration: none;
             color: #00796b;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s, color 0.3s;
         }
-        a.button:hover {
+        .button:hover {
             background-color: #80deea;
             color: #004d40;
         }
         .back-button {
-            position: fixed;
+            position: absolute;
             top: 20px;
             left: 20px;
         }
-        .back-button a {
-            display: block;
-            padding: 10px 20px;
-            background-color: #e0f7fa;
-            border: 2px solid #80deea;
-            border-radius: 5px;
-            text-decoration: none;
+        .search-bar {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .search-bar label {
+            font-weight: normal;
             color: #00796b;
         }
-        .back-button a:hover {
-            background-color: #80deea;
-            color: #004d40;
-        }
-        .search-box {
-            margin: 20px 0;
-        }
-        .search-box form {
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .search-box input[type="date"] {
+        .search-bar input {
             padding: 10px;
-            margin-right: 10px;
+            font-size: 16px;
+            margin-left: 10px;
             border: 2px solid #80deea;
             border-radius: 5px;
+            transition: border-color 0.3s;
         }
-        .search-box button {
+        .search-bar input:focus {
+            border-color: #004d40;
+        }
+        .search-bar button {
             padding: 10px 20px;
-            background-color: #e0f7fa;
-            border: 2px solid #80deea;
-            border-radius: 5px;
-            color: #00796b;
-            cursor: pointer;
-        }
-        .search-box button:hover {
+            font-size: 16px;
             background-color: #80deea;
-            color: #004d40;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: #004d40;
+            color: white;
+        }
+        .message {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="back-button">
-        <a href="{% url 'home' %}" class="button">&larr;</a>
-    </div>
     <div class="container">
+        <div class="back-button">
+            <a href="{% url 'home' %}" class="button">&larr; Back</a>
+        </div>
         <h1>Attendance Records</h1>
         <a href="{% url 'add_attendance' %}" class="button">Mark Attendance</a>
 
         <!-- Search Boxes -->
-        <div class="search-box">
-            <form method="get" action="{% url 'search_attendance_by_date' %}">
-                <label for="attendance-date">Search attendance by Date:</label>
-                <input type="date" id="attendance-date" name="date" required>
-                <button type="submit" class="button">Search</button>
-            </form>
-            <form method="get" action="{% url 'search_absent_by_date' %}">
-                <label for="absent-date">Search absence by Date:</label>
-                <input type="date" id="absent-date" name="date" required>
-                <button type="submit" class="button">Search</button>
-            </form>
+        <div class="section">
+            <div class="search-bar">
+                <form method="get" action="{% url 'search_attendance_by_date' %}">
+                    <label for="attendance-date">Search attendance by Date:</label>
+                    <input type="date" id="attendance-date" name="date" required>
+                    <button type="submit" class="button">Search</button>
+                </form>
+            </div>
+            <div class="search-bar">
+                <form method="get" action="{% url 'search_absent_by_date' %}">
+                    <label for="absent-date">Search absence by Date:</label>
+                    <input type="date" id="absent-date" name="date" required>
+                    <button type="submit" class="button">Search</button>
+                </form>
+            </div>
         </div>
 
         <!-- Buttons for Last 7 and 30 Days -->
-        <div class="button-group">
-            <a href="{% url 'attendance_last_7_days' %}" class="button">View Attendance Last 7 Days</a>
-            <a href="{% url 'absent_last_7_days' %}" class="button">View Absence Last 7 Days</a>
-            <a href="{% url 'attendance_last_30_days' %}" class="button">View Attendance Last 30 Days</a>
-            <a href="{% url 'absent_last_30_days' %}" class="button">View Absence Last 30 Days</a>
+        <div class="section">
+            <div class="button-group">
+                <a href="{% url 'attendance_last_7_days' %}" class="button">View Attendance Last 7 Days</a>
+                <a href="{% url 'absent_last_7_days' %}" class="button">View Absence Last 7 Days</a>
+                <a href="{% url 'attendance_last_30_days' %}" class="button">View Attendance Last 30 Days</a>
+                <a href="{% url 'absent_last_30_days' %}" class="button">View Absence Last 30 Days</a>
+            </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Attendance ID</th>
-                    <th>Child Name</th>
-                    <th>Child ID</th>
-                    <th>Date</th>
-                    <th>Is Present</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for attendance in attendances %}
-                <tr>
-                    <td>{{ attendance.id }}</td>
-                    <td>{{ attendance.child.first_name }} {{ attendance.child.middle_name }} {{ attendance.child.last_name }}</td>
-                    <td>{{ attendance.child.id }}</td>
-                    <td>{{ attendance.date }}</td>
-                    <td>{{ attendance.is_present|yesno:"Present,Absent" }}</td>
-                    <td>
-                        <a href="{% url 'edit_attendance' attendance.pk %}">Edit</a>
-                        <a href="{% url 'delete_attendance' attendance.pk %}">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Attendance ID</th>
+                        <th>Child Name</th>
+                        <th>Child ID</th>
+                        <th>Date</th>
+                        <th>Is Present</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attendance in attendances %}
+                    <tr>
+                        <td>{{ attendance.id }}</td>
+                        <td>{{ attendance.child.first_name }} {{ attendance.child.middle_name }} {{ attendance.child.last_name }}</td>
+                        <td>{{ attendance.child.id }}</td>
+                        <td>{{ attendance.date }}</td>
+                        <td>{{ attendance.is_present|yesno:"Present,Absent" }}</td>
+                        <td>
+                            <a href="{% url 'edit_attendance' attendance.pk %}">Edit</a>
+                            <a href="{% url 'delete_attendance' attendance.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
