@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity Details based on duration</title>
     <style>
-        /* Add your styles here */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -13,6 +12,7 @@
             margin: 0;
             padding: 0;
             position: relative;
+            min-height: 100vh;
         }
         .container {
             width: 80%;
@@ -61,7 +61,7 @@
     </div>
     <div class="container">
         <h1>Activity Details</h1>
-        {% if activities %}
+        {% if activities_info %}
             <table>
                 <thead>
                     <tr>
@@ -73,18 +73,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for activity in activities %}
+                    {% for item in activities_info %}
                     <tr>
-                        <td>{{ activity.id }}</td>
-                        <td>{{ activity.activity_name }}</td>
-                        <td>{{ activity.duration }}</td>
+                        <td>{{ item.activity.id }}</td>
+                        <td>{{ item.activity.activity_name }}</td>
+                        <td>{{ item.activity.duration }}</td>
                         <td>
-                            {% for staff in activity.supervising_staff %}
+                            {% for staff in item.supervising_staff %}
                                 {{ staff.staff.first_name }} {{ staff.staff.last_name }}<br>
                             {% endfor %}
                         </td>
                         <td>
-                            {% for child in activity.attending_children %}
+                            {% for child in item.attending_children %}
                                 {{ child.child.first_name }} {{ child.child.last_name }}<br>
                             {% endfor %}
                         </td>
