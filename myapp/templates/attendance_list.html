@@ -137,6 +137,7 @@
                 <tr>
                     <th>Attendance ID</th>
                     <th>Child Name</th>
+                    <th>Child ID</th>
                     <th>Date</th>
                     <th>Is Present</th>
                     <th>Actions</th>
@@ -147,6 +148,7 @@
                 <tr>
                     <td>{{ attendance.id }}</td>
                     <td>{{ attendance.child.first_name }} {{ attendance.child.middle_name }} {{ attendance.child.last_name }}</td>
+                    <td>{{ attendance.child.id }}</td>
                     <td>{{ attendance.date }}</td>
                     <td>{{ attendance.is_present|yesno:"Present,Absent" }}</td>
                     <td>

@@ -195,7 +195,9 @@
                 <thead>
                     <tr>
                         <th>Parent Name</th>
+                        <th>Parent ID</th>
                         <th>Child Name</th>
+                        <th>Child ID</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -203,7 +205,9 @@
                     {% for relationship in relationships %}
                     <tr>
                         <td>{{ relationship.parent.first_name }} {{ relationship.parent.middle_name }} {{ relationship.parent.last_name }}</td>
+                        <td>{{ relationship.parent.id }}</td>
                         <td>{{ relationship.child.first_name }} {{ relationship.child.middle_name }} {{ relationship.child.last_name }}</td>
+                        <td>{{ relationship.child.id }}</td>
                         <td>
                             <a href="{% url 'edit_relationship' relationship.id %}">Edit</a>
                             <a href="{% url 'delete_relationship' relationship.id %}">Delete</a>
