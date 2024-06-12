@@ -18,9 +18,9 @@
         body {
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align items to the top */
+            align-items: flex-start;
             min-height: 100vh;
-            padding-top: 20px; /* Add padding to prevent content from touching the top */
+            padding-top: 20px;
         }
         .outer-container {
             width: 100%;
@@ -82,6 +82,35 @@
             background-color: #80deea;
             color: #004d40;
         }
+        .search-bar {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #80deea;
+            border: none;
+            color: #004d40;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .search-bar button:hover {
+            background-color: #004d40;
+            color: white;
+        }
+        .message {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -91,7 +120,31 @@
     <div class="outer-container">
         <div class="container">
             <h1>Parent Information & Relationships</h1>
-            
+
+            <!-- Search by Parent ID -->
+            <div class="search-bar">
+                <label for="search-parentID">Search Children by Parent ID</label>
+                <form method="GET" action="{% url 'search_parent' %}">
+                    <input type="text" id="search-parentID" name="parentID" placeholder="Parent ID" required>
+                    <button type="submit">Search</button>
+                </form>
+                {% if invalid_parent_id %}
+                <div class="message">Invalid Parent ID</div>
+                {% endif %}
+            </div>
+
+            <!-- Search by Parent ID for Payments -->
+            <div class="search-bar">
+                <label for="search-parentID-payments">Search Payments by Parent ID</label>
+                <form method="GET" action="{% url 'search_payments' %}">
+                    <input type="text" id="search-parentID-payments" name="parentID" placeholder="Parent ID" required>
+                    <button type="submit">Search</button>
+                </form>
+                {% if invalid_parent_id_payments %}
+                <div class="message">Invalid Parent ID</div>
+                {% endif %}
+            </div>
+
             <!-- Parent Information Section -->
             <h2>Parent List</h2>
             <a href="{% url 'add_parent' %}" class="button">Add New Parent</a>

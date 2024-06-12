@@ -59,6 +59,10 @@ urlpatterns = [
     path('search_child/', views.search_child, name='search_child'),
     path('search_activity/', views.search_activity, name='search_activity'),
     path('search_vaccine/', views.search_vaccine, name='search_vaccine'),
-    path('search_condition/', views.search_condition, name='search_condition')
+    path('search_condition/', views.search_condition, name='search_condition'),
+    path('search_allergy/', views.search_allergy, name='search_allergy'),
+    path('search_emergency_id/', views.search_emergency_id, name='search_emergency_id'),
+     path('search_parent/', views.search_parent, name='search_parent'),
+     path('search_payments/', views.search_payments, name='search_payments'),
 ]
 
