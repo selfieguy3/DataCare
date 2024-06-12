@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-import datetime
-from django.db.models import Sum, F, Q
+from django.db.models import Q, F, ExpressionWrapper, fields
+from datetime import datetime, timedelta
 from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm, PaymentForm, ExpenseForm, OtherExpensesForm
 from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, Expense, OtherExpenses
 
@@ -724,32 +724,39 @@ def search_activity_details(request):
     return render(request, 'activity_list.html', context)
 
 def search_activity_by_duration(request):
-    date = request.GET.get('date')
+    date_str = request.GET.get('date')
     duration = request.GET.get('duration')
     context = {}
 
-    if date and duration:
+    if date_str and duration:
+        # Parse the date input
+        try:
+            date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            context['invalid_date'] = True
+            activities = Activity.objects.all()
+            context['activities'] = activities
+            return render(request, 'activity_list.html', context)
+
         # Define the duration filter using datetime.timedelta
         if duration == "less_than_10":
-            duration_filter = {'duration__lt': datetime.timedelta(minutes=10)}
+            duration_filter = {'duration__lt': timedelta(minutes=10)}
         elif duration == "10_to_30":
             duration_filter = {
-                'duration__gte': datetime.timedelta(minutes=10),
-                'duration__lte': datetime.timedelta(minutes=30)
+                'duration__gte': timedelta(minutes=10),
+                'duration__lte': timedelta(minutes=30)
             }
         elif duration == "more_than_30":
-            duration_filter = {'duration__gt': datetime.timedelta(minutes=30)}
+            duration_filter = {'duration__gt': timedelta(minutes=30)}
         else:
             duration_filter = {}
 
-        if duration_filter:
-            activities = Activity.objects.filter(**duration_filter)
-        else:
-            activities = Activity.objects.none()
+        # Apply the duration filter if valid
+        activities = Activity.objects.filter(**duration_filter)
 
         # Filter activities by date using the related models
         activities = activities.filter(
-            Q(childactivityassignment__date=date)
+            Q(staffactivityassignment__date=date) | Q(childactivityassignment__date=date)
         ).distinct()
 
         # Prepare the context with additional information
