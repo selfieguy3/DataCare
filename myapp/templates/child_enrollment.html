@@ -211,6 +211,14 @@
             </div>
         </div>
 
+        <div class="search-bar">
+            <label for="search-emergency-id">Search by Emergency ID</label>
+            <form method="GET" action="{% url 'search_emergency_id' %}">
+                <input type="text" id="search-emergency-id" name="emergency_id" placeholder="Emergency ID" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        
         <!-- Emergency Contacts Section -->
         <div class="section">
             <h2>Emergency Contacts</h2>
@@ -256,6 +264,14 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <div class="search-bar">
+            <label for="search-allergy">Search by Allergy Name</label>
+            <form method="GET" action="{% url 'search_allergy' %}">
+                <input type="text" id="search-allergy" name="allergy" placeholder="Allergy Name" required>
+                <button type="submit">Search</button>
+            </form>
         </div>
 
         <!-- Allergies Section -->

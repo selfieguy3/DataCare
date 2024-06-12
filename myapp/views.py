@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum
 from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm, PaymentForm, ExpenseForm, OtherExpensesForm
 from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, Expense, OtherExpenses
 
@@ -610,3 +611,64 @@ def search_condition(request):
             context['no_children'] = True
 
     return render(request, 'search_condition_results.html', context)
+
+def search_allergy(request):
+    allergy = request.GET.get('allergy')
+    context = {}
+
+    if allergy:
+        allergies = Allergy.objects.filter(allergy_name__iexact=allergy)
+        children = [allergy.child for allergy in allergies]
+        context['children'] = children
+        if not allergies:
+            context['no_children'] = True
+
+    return render(request, 'search_allergy_results.html', context)
+
+def search_emergency_id(request):
+    emergency_id = request.GET.get('emergency_id')
+    context = {}
+
+    if emergency_id:
+        emergency_contacts = EmergencyContact.objects.filter(id=emergency_id)
+        children = [contact.child for contact in emergency_contacts]
+        context['children'] = children
+        if not emergency_contacts:
+            context['no_children'] = True
+
+    return render(request, 'search_emergency_id_results.html', context)
+
+def search_parent(request):
+    parent_id = request.GET.get('parentID')
+    context = {}
+
+    if parent_id:
+        try:
+            parent = Parent.objects.get(id=parent_id)
+            relationships = ParentChildRelationship.objects.filter(parent=parent)
+            children = [relationship.child for relationship in relationships]
+            context['children'] = children
+            if not children:
+                context['no_children'] = True
+        except Parent.DoesNotExist:
+            context['no_children'] = True
+
+    return render(request, 'search_parent_results.html', context)
+
+def search_payments(request):
+    parent_id = request.GET.get('parentID')
+    context = {}
+
+    if parent_id:
+        try:
+            parent = Parent.objects.get(id=parent_id)
+            payments = Payment.objects.filter(parent=parent)
+            total_amount = payments.aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
+            context['payments'] = payments
+            context['total_amount'] = total_amount
+            if not payments:
+                context['no_payments'] = True
+        except Parent.DoesNotExist:
+            context['invalid_parent_id_payments'] = True
+
+    return render(request, 'search_payments_results.html', context)

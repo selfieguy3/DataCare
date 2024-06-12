@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results by Parent ID - Payments</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        .outer-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 80%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1, h2, h3 {
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #80deea;
+        }
+        a.button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+        }
+        a.button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+        }
+        .back-button a {
+            display: block;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+        }
+        .back-button a:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+        .message {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+        <a href="{% url 'parent_list' %}" class="button">&larr;</a>
+    </div>
+    <div class="outer-container">
+        <div class="container">
+            <h1>Search Results by Parent ID - Payments</h1>
+            <div class="info">
+                {% if payments %}
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Payment Date</th>
+                                <th>Payment Method</th>
+                                <th>Amount Paid</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in payments %}
+                            <tr>
+                                <td>{{ payment.payment_date }}</td>
+                                <td>{{ payment.payment_method }}</td>
+                                <td>{{ payment.amount_paid }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <th colspan="2">Total</th>
+                                <th>{{ total_amount }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="message">No payments found for the specified Parent ID.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
