@@ -122,8 +122,16 @@ class OtherExpenses(models.Model):
     def __str__(self):
         return self.name
 
-class Expense(models.Model):
+class ChildExpense(models.Model):
     child = models.ForeignKey(Child, on_delete=models.CASCADE, blank=True, null=True)
+    date = models.DateField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"Expense on {self.date} for {self.amount}"
+
+class ActivityExpense(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)

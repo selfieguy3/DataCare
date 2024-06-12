@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.utils import timezone
 from datetime import datetime, timedelta
-from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm, PaymentForm, ExpenseForm, OtherExpensesForm
-from .models import Child, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, Expense, OtherExpenses
+from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm, PaymentForm, OtherExpensesForm, ActivityExpenseForm, ChildExpenseForm
+from .models import ActivityExpense, Child, ChildExpense, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, OtherExpenses, ChildExpense, ActivityExpense
 
 def home(request):
     return render(request, 'home.html')
@@ -387,10 +387,12 @@ def delete_attendance(request, pk):
 
 def payment_list(request):
     payments = Payment.objects.all()
-    expenses = Expense.objects.all()
+    child_expenses = ChildExpense.objects.all()
+    activity_expenses = ActivityExpense.objects.all()
     other_expenses = OtherExpenses.objects.all()
     return render(request, 'payment_list.html', {'payments': payments,
-                                                 'expenses': expenses,
+                                                 'child_expenses': child_expenses,
+                                                 'activity_expenses': activity_expenses,
                                                  'other_expenses': other_expenses})
 
 def add_payment(request):
@@ -421,33 +423,61 @@ def delete_payment(request, pk):
         return redirect('payment_list')
     return render(request, 'confirm_delete5.html', {'object': payment})
 
-def add_expense(request):
+def add_child_expense(request):
     if request.method == 'POST':
-        form = ExpenseForm(request.POST)
+        form = ChildExpenseForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('payment_list')
     else:
-        form = ExpenseForm()
-    return render(request, 'add_expense.html', {'form': form})
+        form = ChildExpenseForm()
+    return render(request, 'add_child_expense.html', {'form': form})
 
-def edit_expense(request, pk):
-    expense = get_object_or_404(Expense, pk=pk)
+def edit_child_expense(request, pk):
+    expense = get_object_or_404(ChildExpense, pk=pk)
     if request.method == 'POST':
-        form = ExpenseForm(request.POST, instance=expense)
+        form = ChildExpenseForm(request.POST, instance=expense)
         if form.is_valid():
             form.save()
             return redirect('payment_list')
     else:
-        form = ExpenseForm(instance=expense)
-    return render(request, 'edit_expense.html', {'form': form})
+        form = ChildExpenseForm(instance=expense)
+    return render(request, 'edit__child_expense.html', {'form': form})
 
-def delete_expense(request, pk):
-    expense = get_object_or_404(Expense, pk=pk)
+def delete_child_expense(request, pk):
+    expense = get_object_or_404(ChildExpense, pk=pk)
     if request.method == 'POST':
         expense.delete()
         return redirect('payment_list')
     return render(request, 'confirm_delete6.html', {'object': expense})
+
+def add_activity_expense(request):
+    if request.method == 'POST':
+        form = ActivityExpenseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')
+    else:
+        form = ActivityExpenseForm()
+    return render(request, 'add_activity_expense.html', {'form': form})
+
+def edit_activity_expense(request, pk):
+    expense = get_object_or_404(ActivityExpense, pk=pk)
+    if request.method == 'POST':
+        form = ActivityExpenseForm(request.POST, instance=expense)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')
+    else:
+        form = ActivityExpenseForm(instance=expense)
+    return render(request, 'edit__activity_expense.html', {'form': form})
+
+def delete_activity_expense(request, pk):
+    expense = get_object_or_404(ActivityExpense, pk=pk)
+    if request.method == 'POST':
+        expense.delete()
+        return redirect('payment_list')
+    return render(request, 'confirm_delete8.html', {'object': expense})
 
 def add_other_expense(request):
     if request.method == 'POST':
@@ -479,7 +509,6 @@ def delete_other_expense(request, pk):
 
 def search_child(request):
     child_id = request.GET.get('childID')
-    # health_record = None
     context = {}
 
     if child_id:
@@ -907,3 +936,4 @@ def absent_last_30_days(request):
         'today': today
     }
     return render(request, 'absent_last_30_days.html', context)
+
