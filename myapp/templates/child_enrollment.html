@@ -62,10 +62,14 @@
         }
         .search-bar {
             margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .search-bar input {
             padding: 10px;
             font-size: 16px;
+            margin-left: 10px;
         }
         .search-bar button {
             padding: 10px 20px;
@@ -74,6 +78,7 @@
             border: none;
             color: #004d40;
             cursor: pointer;
+            margin-left: 10px;
         }
         .search-bar button:hover {
             background-color: #004d40;
@@ -95,11 +100,25 @@
 
         <!-- Search by ChildID -->
         <div class="search-bar">
+            <label for="search-childID">Search ChildInfo by ChildID</label>
             <form method="GET" action="{% url 'search_child' %}">
-                <input type="text" name="childID" placeholder="Search childInfo by ChildID" required>
+                <input type="text" id="search-childID" name="childID" placeholder="ChildID" required>
                 <button type="submit">Search</button>
             </form>
             {% if invalid_child_id %}
+            <div class="message">Invalid ChildID</div>
+            {% endif %}
+        </div>
+
+        <!-- Search by ChildID and Date -->
+        <div class="search-bar">
+            <label for="search-activity-childID">Search activities and staffs by ChildID</label>
+            <form method="GET" action="{% url 'search_activity' %}">
+                <input type="text" id="search-activity-childID" name="childID" placeholder="ChildID" required>
+                <input type="date" name="date" placeholder="Date" required>
+                <button type="submit">Search</button>
+            </form>
+            {% if invalid_child_id_date %}
             <div class="message">Invalid ChildID</div>
             {% endif %}
         </div>
@@ -139,6 +158,24 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <!-- Search by Vaccines -->
+        <div class="search-bar">
+            <label for="search-vaccine">Search by Vaccine Name</label>
+            <form method="GET" action="{% url 'search_vaccine' %}">
+                <input type="text" id="search-vaccine" name="vaccine" placeholder="Vaccine Name" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Search by Medical Condition -->
+        <div class="search-bar">
+            <label for="search-condition">Search by Medical Condition</label>
+            <form method="GET" action="{% url 'search_condition' %}">
+                <input type="text" id="search-condition" name="condition" placeholder="Medical Condition" required>
+                <button type="submit">Search</button>
+            </form>
         </div>
 
         <!-- Health Records Section -->
@@ -184,6 +221,7 @@
                         <tr>
                             <th>Child ID</th>
                             <th>Child Name</th>
+                            <th>Emergency ID</th>
                             <th>First Name</th>
                             <th>Middle Name</th>
                             <th>Last Name</th>
@@ -200,6 +238,7 @@
                         <tr>
                             <td>{{ contact.child.id }}</td>
                             <td>{{ contact.child.first_name }} {{ contact.child.middle_name }} {{ contact.child.last_name }}</td>
+                            <td>{{ contact.id }}</td>
                             <td>{{ contact.first_name }}</td>
                             <td>{{ contact.middle_name }}</td>
                             <td>{{ contact.last_name }}</td>

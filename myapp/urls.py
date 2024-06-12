@@ -57,5 +57,8 @@ urlpatterns = [
     path('other_expenses/edit/<int:pk>/', views.edit_other_expense, name='edit_other_expense'),
     path('other_expenses/delete/<int:pk>/', views.delete_other_expense, name='delete_other_expense'),
     path('search_child/', views.search_child, name='search_child'),
+    path('search_activity/', views.search_activity, name='search_activity'),
+    path('search_vaccine/', views.search_vaccine, name='search_vaccine'),
+    path('search_condition/', views.search_condition, name='search_condition')
 ]
 
