@@ -18,14 +18,14 @@
         body {
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align items to the top */
+            align-items: flex-start;
             min-height: 100vh;
-            padding-top: 20px; /* Add padding to prevent content from touching the top */
+            padding-top: 20px;
         }
         .container {
             width: 80%;
             padding: 20px;
-            box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+            box-sizing: border-box;
         }
         h1, h2 {
             margin: 20px 0;
@@ -45,7 +45,7 @@
         }
         a.button {
             display: inline-block;
-            margin: 10px 0;
+            margin: 10px 10px 10px 0;
             padding: 10px 20px;
             background-color: #e0f7fa;
             border: 2px solid #80deea;
@@ -75,6 +75,31 @@
             background-color: #80deea;
             color: #004d40;
         }
+        .search-box {
+            margin: 20px 0;
+        }
+        .search-box form {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .search-box input[type="date"] {
+            padding: 10px;
+            margin-right: 10px;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+        }
+        .search-box button {
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            color: #00796b;
+            cursor: pointer;
+        }
+        .search-box button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
     </style>
 </head>
 <body>
@@ -84,6 +109,29 @@
     <div class="container">
         <h1>Attendance Records</h1>
         <a href="{% url 'add_attendance' %}" class="button">Mark Attendance</a>
+
+        <!-- Search Boxes -->
+        <div class="search-box">
+            <form method="get" action="{% url 'search_attendance_by_date' %}">
+                <label for="attendance-date">Search attendance by Date:</label>
+                <input type="date" id="attendance-date" name="date" required>
+                <button type="submit" class="button">Search</button>
+            </form>
+            <form method="get" action="{% url 'search_absent_by_date' %}">
+                <label for="absent-date">Search absence by Date:</label>
+                <input type="date" id="absent-date" name="date" required>
+                <button type="submit" class="button">Search</button>
+            </form>
+        </div>
+
+        <!-- Buttons for Last 7 and 30 Days -->
+        <div class="button-group">
+            <a href="{% url 'attendance_last_7_days' %}" class="button">View Attendance Last 7 Days</a>
+            <a href="{% url 'absent_last_7_days' %}" class="button">View Absence Last 7 Days</a>
+            <a href="{% url 'attendance_last_30_days' %}" class="button">View Attendance Last 30 Days</a>
+            <a href="{% url 'absent_last_30_days' %}" class="button">View Absence Last 30 Days</a>
+        </div>
+
         <table>
             <thead>
                 <tr>

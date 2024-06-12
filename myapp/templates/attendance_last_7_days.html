@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Records - Last 7 Days</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        .container {
+            width: 80%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #80deea;
+        }
+        a.button {
+            display: inline-block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+        }
+        a.button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+        <a href="{% url 'attendance_list' %}" class="button">&larr;</a>
+    </div>
+    <div class="container">
+        <h1>Attendance Records - Last 7 Days</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Attendance ID</th>
+                    <th>Child Name</th>
+                    <th>Child ID</th>
+                    <th>Date</th>
+                    <th>Is Present</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in attendance_records %}
+                <tr>
+                    <td>{{ record.id }}</td>
+                    <td>{{ record.child.first_name }} {{ record.child.middle_name }} {{ record.child.last_name }}</td>
+                    <td>{{ record.child.id }}</td>
+                    <td>{{ record.date }}</td>
+                    <td>{{ record.is_present|yesno:"Present,Absent" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
