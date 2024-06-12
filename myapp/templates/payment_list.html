@@ -86,6 +86,7 @@
                 <tr>
                     <th>Payment ID</th>
                     <th>Parent Name</th>
+                    <th>Parent ID</th>
                     <th>Amount Paid</th>
                     <th>Payment Method</th>
                     <th>Payment Date</th>
@@ -97,6 +98,7 @@
                 <tr>
                     <td>{{ payment.id }}</td>
                     <td>{{ payment.parent.first_name }} {{ payment.parent.middle_name }} {{ payment.parent.last_name }}</td>
+                    <td>{{ payment.parent.id }}</td>
                     <td>{{ payment.amount_paid }}</td>
                     <td>{{ payment.payment_method }}</td>
                     <td>{{ payment.payment_date }}</td>

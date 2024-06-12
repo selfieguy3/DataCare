@@ -59,13 +59,6 @@
                     {{'No record'}}
                 {% endif %}
             </p>
-            <p><strong>Medical Conditions:</strong> 
-                {% if health_record %}
-                    {{health_record.medical_conditions}}
-                {% else %}
-                    {{'No record'}}
-                {% endif %}
-            </p>
             <p><strong>Emergency Contacts:</strong>
                 {% if emergency_contacts %}
                     {% for contact in emergency_contacts %}

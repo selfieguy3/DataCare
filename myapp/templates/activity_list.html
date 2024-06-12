@@ -189,7 +189,9 @@
                 <thead>
                     <tr>
                         <th>Activity Name</th>
+                        <th>Activity ID</th>
                         <th>Child Name</th>
+                        <th>Child ID</th>
                         <th>Date</th>
                         <th>Actions</th>
                     </tr>
@@ -198,7 +200,9 @@
                     {% for assignment in child_activities_assignments %}
                     <tr>
                         <td>{{ assignment.activity.activity_name }}</td>
+                        <td>{{ assignment.activity.id }}</td>
                         <td>{{ assignment.child.first_name }} {{ assignment.child.middle_name }} {{ assignment.child.last_name }}</td>
+                        <td>{{ assignment.child.id }}</td>
                         <td>{{ assignment.date }}</td>
                         <td>
                             <a href="{% url 'edit_activity_assignment' assignment.id %}">Edit</a>

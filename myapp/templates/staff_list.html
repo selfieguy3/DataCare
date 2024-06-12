@@ -133,7 +133,6 @@
                     <th>Middle Name</th>
                     <th>Last Name</th>
                     <th>Age</th>
-                    <th>Salary</th>
                     <th>Phone Number</th>
                     <th>Street Address</th>
                     <th>City</th>
@@ -151,7 +150,6 @@
                     <td>{{ staff.middle_name }}</td>
                     <td>{{ staff.last_name }}</td>
                     <td>{{ staff.age }}</td>
-                    <td>{{ staff.salary }}</td>
                     <td>{{ staff.phone_number }}</td>
                     <td>{{ staff.street_address }}</td>
                     <td>{{ staff.city }}</td>
@@ -174,7 +172,9 @@
             <thead>
                 <tr>
                     <th>Staff Name</th>
+                    <th>Staff ID</th>
                     <th>Child Name</th>
+                    <th>Child ID</th>
                     <th>Date</th>
                     <th>Actions</th>
                 </tr>
@@ -183,7 +183,9 @@
                 {% for assignment in staff_child_assignments %}
                 <tr>
                     <td>{{ assignment.staff.first_name }} {{ assignment.staff.middle_name }} {{ assignment.staff.last_name }}</td>
+                    <td>{{ assignment.staff.id }}</td>
                     <td>{{ assignment.child.first_name }} {{ assignment.child.middle_name }} {{ assignment.child.last_name }}</td>
+                    <td>{{ assignment.child.id }}</td>
                     <td>{{ assignment.date }}</td>
                     <td>
                         <a href="{% url 'edit_staff_child_assignment' assignment.id %}">Edit</a>
@@ -201,7 +203,9 @@
             <thead>
                 <tr>
                     <th>Staff Name</th>
+                    <th>Staff ID</th>
                     <th>Activity Name</th>
+                    <th>Activity ID</th>
                     <th>Date</th>
                     <th>Actions</th>
                 </tr>
@@ -210,7 +214,9 @@
                 {% for assignment in staff_activity_assignments %}
                 <tr>
                     <td>{{ assignment.staff.first_name }} {{ assignment.staff.middle_name }} {{ assignment.staff.last_name }}</td>
+                    <td>{{ assignment.staff.id }}</td>
                     <td>{{ assignment.activity.activity_name }}</td>
+                    <td>{{ assignment.activity.id }}</td>
                     <td>{{ assignment.date }}</td>
                     <td>
                         <a href="{% url 'edit_staff_activity_assignment' assignment.id %}">Edit</a>
