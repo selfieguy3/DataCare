@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Details based on duration</title>
+    <style>
+        /* Add your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #80deea;
+        }
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .back-button a {
+            display: block;
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+        }
+        .back-button a:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-button">
+        <a href="{% url 'activity_list' %}" class="button">&larr; Back</a>
+    </div>
+    <div class="container">
+        <h1>Activity Details</h1>
+        {% if activities %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Activity ID</th>
+                        <th>Activity Name</th>
+                        <th>Duration</th>
+                        <th>Staff</th>
+                        <th>Children</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in activities %}
+                    <tr>
+                        <td>{{ activity.id }}</td>
+                        <td>{{ activity.activity_name }}</td>
+                        <td>{{ activity.duration }}</td>
+                        <td>
+                            {% for staff in activity.supervising_staff %}
+                                {{ staff.staff.first_name }} {{ staff.staff.last_name }}<br>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for child in activity.attending_children %}
+                                {{ child.child.first_name }} {{ child.child.last_name }}<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No activities found for the selected date and duration.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

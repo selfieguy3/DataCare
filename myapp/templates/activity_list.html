@@ -82,6 +82,35 @@
             background-color: #80deea;
             color: #004d40;
         }
+        .search-bar {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #80deea;
+            border: none;
+            color: #004d40;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .search-bar button:hover {
+            background-color: #004d40;
+            color: white;
+        }
+        .message {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -93,6 +122,22 @@
             <h1>Activity Management</h1>
             <h2>Activity List</h2>
             <a href="{% url 'activity_add' %}" class="button">Add New Activity</a>
+
+            <div class="search-bar">
+                <label for="search-activityID">Search by Activity ID, Name, and Date</label>
+                <form method="GET" action="{% url 'search_activity_details' %}">
+                    <input type="text" id="search-activityID" name="activityID" placeholder="Activity ID">
+                    <input type="text" id="search-activityName" name="activityName" placeholder="Activity Name">
+                    <input type="date" name="date" placeholder="Date" required>
+                    <button type="submit">Search</button>
+                </form>
+                {% if invalid_activity_id %}
+                <div class="message">Invalid Activity ID</div>
+                {% elif no_matching_activity_name %}
+                <div class="message">No matching activity name</div>
+                {% endif %}
+            </div>
+
             <table>
                 <thead>
                     <tr>
@@ -122,6 +167,20 @@
                     {% endfor %}
                 </tbody>
             </table>
+
+            <div class="search-bar">
+                <label for="search-activity">Search by Date and Duration</label>
+                <form method="GET" action="{% url 'search_activity_by_duration' %}">
+                    <input type="date" id="search-date" name="date" placeholder="Date" required>
+                    <select name="duration" required>
+                        <option value="">Select Duration</option>
+                        <option value="less_than_10">Less than 10 minutes</option>
+                        <option value="10_to_30">10 to 30 minutes</option>
+                        <option value="more_than_30">More than 30 minutes</option>
+                    </select>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
 
             <!-- Activity-Child Assignments Section -->
             <h3>Activity-Child Assignments</h3>

@@ -73,6 +73,35 @@
             background-color: #80deea;
             color: #004d40;
         }
+        .search-bar {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #80deea;
+            border: none;
+            color: #004d40;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .search-bar button:hover {
+            background-color: #004d40;
+            color: white;
+        }
+        .message {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -81,6 +110,18 @@
     </div>
     <div class="container">
         <h1>Staff Management</h1>
+
+        <div class="search-bar">
+            <label for="search-staffID">Search activities and children by StaffID</label>
+            <form method="GET" action="{% url 'search_staff' %}">
+                <input type="text" id="search-staffID" name="staffID" placeholder="Staff ID" required>
+                <input type="date" name="date" placeholder="Date" required>
+                <button type="submit">Search</button>
+            </form>
+            {% if invalid_staff_id_date %}
+            <div class="message">Invalid Staff ID</div>
+            {% endif %}
+        </div>
 
         <h2>Staff List</h2>
         <a href="{% url 'staff_add' %}" class="button">Add New Staff Member</a>
