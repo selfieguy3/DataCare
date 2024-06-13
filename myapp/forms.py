@@ -93,7 +93,7 @@ class ActivityExpenseForm(forms.ModelForm):
 class OtherExpensesForm(forms.ModelForm):
     class Meta:
         model = OtherExpenses
-        fields = ['name', 'cost', 'description', 'date']
+        fields = ['name', 'amount', 'description', 'date']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
         }
