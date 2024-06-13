@@ -76,6 +76,17 @@ urlpatterns = [
     path('absent_last_7_days/', views.absent_last_7_days, name='absent_last_7_days'),
     path('attendance_last_30_days/', views.attendance_last_30_days, name='attendance_last_30_days'),
     path('absent_last_30_days/', views.absent_last_30_days, name='absent_last_30_days'),
-    
+    path('payments/last-7-days/', views.payments_last_7_days, name='payments_last_7_days'),
+    path('payments/last-30-days/', views.payments_last_30_days, name='payments_last_30_days'),
+    path('child_expenses/last_7_days/', views.child_expenses_last_7_days, name='child_expenses_last_7_days'),
+    path('child_expenses/last_30_days/', views.child_expenses_last_30_days, name='child_expenses_last_30_days'),
+    path('child_expenses/all/', views.all_child_expenses, name='all_child_expenses'),
+    path('activity_expenses/last_7_days/', views.activity_expenses_last_7_days, name='activity_expenses_last_7_days'),
+    path('activity_expenses/last_30_days/', views.activity_expenses_last_30_days, name='activity_expenses_last_30_days'),
+    path('activity_expenses/all/', views.all_activity_expenses, name='all_activity_expenses'),
+    path('other_expenses/last_7_days/', views.other_expenses_last_7_days, name='other_expenses_last_7_days'),
+    path('other_expenses/last_30_days/', views.other_expenses_last_30_days, name='other_expenses_last_30_days'),
+    path('other_expenses/all/', views.all_other_expenses, name='all_other_expenses'),
+
 ]
 

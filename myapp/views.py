@@ -981,3 +981,157 @@ def absent_last_30_days(request):
     }
     return render(request, 'absent_last_30_days.html', context)
 
+def payments_last_7_days(request):
+    today = timezone.now().date()
+    seven_days_ago = today - timedelta(days=7)
+    payments = Payment.objects.filter(payment_date__range=[seven_days_ago, today])
+    total_amount = sum(payment.amount_paid for payment in payments)
+
+    context = {
+        'total_amount': total_amount,
+        'payments': payments,
+    }
+
+    return render(request, 'payments_last_7_days.html', context)
+
+def payments_last_30_days(request):
+    today = timezone.now().date()
+    thirty_days_ago = today - timedelta(days=30)
+    payments = Payment.objects.filter(payment_date__range=[thirty_days_ago, today])
+    total_amount = sum(payment.amount_paid for payment in payments)
+
+    context = {
+        'total_amount': total_amount,
+        'payments': payments,
+    }
+
+    return render(request, 'payments_last_30_days.html', context)
+
+def calculate_total_expenses(expenses):
+    return sum(expense.amount for expense in expenses)
+
+def child_expenses(request):
+    context = {
+        'child_expenses': ChildExpense.objects.all()
+    }
+    return render(request, 'child_expenses.html', context)
+
+def child_expenses_last_7_days(request):
+    today = timezone.now().date()
+    seven_days_ago = today - timedelta(days=7)
+    expenses = ChildExpense.objects.filter(date__range=[seven_days_ago, today])
+    total_amount = calculate_total_expenses(expenses)
+
+    context = {
+        'child_expenses': expenses,
+        'total_amount': total_amount
+    }
+    return render(request, 'child_expenses_last_7_days.html', context)
+
+def child_expenses_last_30_days(request):
+    today = timezone.now().date()
+    thirty_days_ago = today - timedelta(days=30)
+    expenses = ChildExpense.objects.filter(date__range=[thirty_days_ago, today])
+    total_amount = calculate_total_expenses(expenses)
+
+    context = {
+        'child_expenses': expenses,
+        'total_amount': total_amount
+    }
+    return render(request, 'child_expenses_last_30_days.html', context)
+
+def all_child_expenses(request):
+    expenses = ChildExpense.objects.all()
+    total_amount = calculate_total_expenses(expenses)
+
+    context = {
+        'child_expenses': expenses,
+        'total_amount': total_amount
+    }
+    return render(request, 'child_expenses_all.html', context)
+
+def calculate_total_expenses(expenses):
+    return sum(expense.amount for expense in expenses)
+
+def activity_expenses(request):
+    context = {
+        'activity_expenses': ActivityExpense.objects.all()
+    }
+    return render(request, 'activity_expenses.html', context)
+
+def activity_expenses_last_7_days(request):
+    today = timezone.now().date()
+    seven_days_ago = today - timedelta(days=7)
+    expenses = ActivityExpense.objects.filter(date__range=[seven_days_ago, today])
+    total_amount = calculate_total_expenses(expenses)
+
+    context = {
+        'activity_expenses': expenses,
+        'total_amount': total_amount
+    }
+    return render(request, 'activity_expenses_last_7_days.html', context)
+
+def activity_expenses_last_30_days(request):
+    today = timezone.now().date()
+    thirty_days_ago = today - timedelta(days=30)
+    expenses = ActivityExpense.objects.filter(date__range=[thirty_days_ago, today])
+    total_amount = calculate_total_expenses(expenses)
+
+    context = {
+        'activity_expenses': expenses,
+        'total_amount': total_amount
+    }
+    return render(request, 'activity_expenses_last_30_days.html', context)
+
+def all_activity_expenses(request):
+    expenses = ActivityExpense.objects.all()
+    total_amount = calculate_total_expenses(expenses)
+
+    context = {
+        'activity_expenses': expenses,
+        'total_amount': total_amount
+    }
+    return render(request, 'activity_expenses_all.html', context)
+
+def calculate_total_expenses(expenses):
+    return sum(expense.amount for expense in expenses)
+
+def other_expenses(request):
+    context = {
+        'other_expenses': OtherExpenses.objects.all()
+    }
+    return render(request, 'other_expenses.html', context)
+
+def other_expenses_last_7_days(request):
+    today = timezone.now().date()
+    seven_days_ago = today - timedelta(days=7)
+    expenses = OtherExpenses.objects.filter(date__range=[seven_days_ago, today])
+    total_amount = calculate_total_expenses(expenses)
+
+    context = {
+        'other_expenses': expenses,
+        'total_amount': total_amount
+    }
+    return render(request, 'other_expenses_last_7_days.html', context)
+
+def other_expenses_last_30_days(request):
+    today = timezone.now().date()
+    thirty_days_ago = today - timedelta(days=30)
+    expenses = OtherExpenses.objects.filter(date__range=[thirty_days_ago, today])
+    total_amount = calculate_total_expenses(expenses)
+
+    context = {
+        'other_expenses': expenses,
+        'total_amount': total_amount
+    }
+    return render(request, 'other_expenses_last_30_days.html', context)
+
+def all_other_expenses(request):
+    expenses = OtherExpenses.objects.all()
+    total_amount = calculate_total_expenses(expenses)
+
+    context = {
+        'other_expenses': expenses,
+        'total_amount': total_amount
+    }
+    return render(request, 'other_expenses_all.html', context)

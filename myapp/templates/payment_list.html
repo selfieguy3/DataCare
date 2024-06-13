@@ -72,6 +72,8 @@
             font-size: 16px;
             margin-bottom: 10px;
             transition: background-color 0.3s, color 0.3s;
+            display: inline-block;
+            margin: 5px;
         }
         .button:hover {
             background-color: #80deea;
@@ -123,6 +125,12 @@
             font-size: 16px;
             margin-top: 10px;
         }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
     </style>
 </head>
 <body>
@@ -136,6 +144,16 @@
         <div class="section">
             <h2>Payments</h2>
             <a href="{% url 'add_payment' %}" class="button">Add New Payment</a>
+
+            <div class="button-group">
+                <form method="get" action="{% url 'payments_last_7_days' %}">
+                    <button class="button" type="submit">View Total Payments Last 7 Days</button>
+                </form>
+                <form method="get" action="{% url 'payments_last_30_days' %}">
+                    <button class="button" type="submit">View Total Payments Last 30 Days</button>
+                </form>
+            </div>
+
             <div class="table-container">
                 <table>
                     <thead>
@@ -173,6 +191,17 @@
         <div class="section">
             <h2>Child Expenses</h2>
             <a href="{% url 'add_child_expense' %}" class="button">Add New Child Expense</a>
+            <div class="button-group">
+                <form method="get" action="{% url 'child_expenses_last_7_days' %}">
+                    <button class="button" type="submit">View Total Child Expenses Last 7 Days</button>
+                </form>
+                <form method="get" action="{% url 'child_expenses_last_30_days' %}">
+                    <button class="button" type="submit">View Total Child Expenses Last 30 Days</button>
+                </form>
+                <form method="get" action="{% url 'all_child_expenses' %}">
+                    <button class="button" type="submit">View All Past Child Expenses</button>
+                </form>
+            </div>
             <div class="table-container">
                 <table>
                     <thead>
@@ -210,6 +239,17 @@
         <div class="section">
             <h2>Activity Expenses</h2>
             <a href="{% url 'add_activity_expense' %}" class="button">Add New Activity Expense</a>
+            <div class="button-group">
+                <form method="get" action="{% url 'activity_expenses_last_7_days' %}">
+                    <button class="button" type="submit">View Total Activity Expenses Last 7 Days</button>
+                </form>
+                <form method="get" action="{% url 'activity_expenses_last_30_days' %}">
+                    <button class="button" type="submit">View Total Activity Expenses Last 30 Days</button>
+                </form>
+                <form method="get" action="{% url 'all_activity_expenses' %}">
+                    <button class="button" type="submit">View All Activity Expenses</button>
+                </form>
+            </div>
             <div class="table-container">
                 <table>
                     <thead>
@@ -247,6 +287,17 @@
         <div class="section">
             <h2>Miscellaneous Expenses</h2>
             <a href="{% url 'add_other_expense' %}" class="button">Add Miscellaneous Expense</a>
+            <div class="button-group">
+                <form method="get" action="{% url 'other_expenses_last_7_days' %}">
+                    <button class="button" type="submit">View Total Miscellaneous Expenses Last 7 Days</button>
+                </form>
+                <form method="get" action="{% url 'other_expenses_last_30_days' %}">
+                    <button class="button" type="submit">View Total Miscellaneous Expenses Last 30 Days</button>
+                </form>
+                <form method="get" action="{% url 'all_other_expenses' %}">
+                    <button class="button" type="submit">View All Miscellaneous Expenses</button>
+                </form>
+            </div>
             <div class="table-container">
                 <table>
                     <thead>
@@ -254,6 +305,7 @@
                             <th>Miscellaneous Expense ID</th>
                             <th>Name</th>
                             <th>Cost</th>
+                            <th>Date</th>
                             <th>Description</th>
                             <th>Actions</th>
                         </tr>
@@ -264,6 +316,7 @@
                             <td>{{ other_expense.id }}</td>
                             <td>{{ other_expense.name }}</td>
                             <td>{{ other_expense.cost }}</td>
+                            <td>{{ other_expense.date }}</td>
                             <td>{{ other_expense.description }}</td>
                             <td>
                                 <a href="{% url 'edit_other_expense' other_expense.pk %}">Edit</a>
