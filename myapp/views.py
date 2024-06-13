@@ -539,6 +539,7 @@ def search_child(request):
                 middle_name__iexact=middle_name,
                 last_name__iexact=last_name
             )
+            child.age = calculate_age(child.date_of_birth)
             context["child"] = child
 
             try:
@@ -573,7 +574,11 @@ def search_child(request):
         except Child.DoesNotExist:
             context['invalid_child_id'] = True
 
-    context['children'] = Child.objects.all()
+    children = Child.objects.all()
+    for child in children:
+        child.age = calculate_age(child.date_of_birth)
+        
+    context['children'] = children
     context['health_records'] = HealthRecord.objects.all()
     context['emergency_contacts'] = EmergencyContact.objects.all()
     context['allergies'] = Allergy.objects.all()
