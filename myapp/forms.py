@@ -24,7 +24,7 @@ class AllergyForm(forms.ModelForm):
 class ParentForm(forms.ModelForm):
     class Meta:
         model = Parent
-        fields = ['first_name', 'middle_name', 'last_name', 'age', 'phone_number', 'street_address', 'city', 'zip_code', 'state', 'email']
+        fields = ['first_name', 'middle_name', 'last_name', 'phone_number', 'street_address', 'city', 'zip_code', 'state', 'email']
 
 
 class ParentChildRelationshipForm(forms.ModelForm):
@@ -35,7 +35,7 @@ class ParentChildRelationshipForm(forms.ModelForm):
 class StaffForm(forms.ModelForm):
     class Meta:
         model = Staff
-        fields = ['first_name', 'middle_name', 'last_name', 'age', 'phone_number', 'street_address', 'city', 'zip_code', 'state', 'email']
+        fields = ['first_name', 'middle_name', 'last_name', 'phone_number', 'street_address', 'city', 'zip_code', 'state', 'email']
 
 class ActivityForm(forms.ModelForm):
     class Meta:
