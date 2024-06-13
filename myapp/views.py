@@ -212,16 +212,37 @@ def delete_relationship(request, relationship_id):
     relationship.delete()
     return redirect('parent_list')
 
+# def staff_list(request):
+#     staffs = Staff.objects.all()
+#     staff_child_assignments = StaffChildAssignment.objects.all()
+#     staff_activity_assignments = StaffActivityAssignment.objects.all()
+#     return render(request, 'staff_list.html', {
+#         'staffs': staffs, 
+#         'staff_child_assignments': staff_child_assignments,
+#         'staff_activity_assignments': staff_activity_assignments
+#     })
+
 def staff_list(request):
-    staffs = Staff.objects.all()
-    staff_child_assignments = StaffChildAssignment.objects.all()
-    staff_activity_assignments = StaffActivityAssignment.objects.all()
+    staffs = Staff.objects.order_by('-id')[:5]
+    staff_child_assignments = StaffChildAssignment.objects.order_by('-id')[:5]
+    staff_activity_assignments = StaffActivityAssignment.objects.order_by('-id')[:5]
     return render(request, 'staff_list.html', {
         'staffs': staffs, 
         'staff_child_assignments': staff_child_assignments,
         'staff_activity_assignments': staff_activity_assignments
     })
 
+def all_staffs(request):
+    all_staffs = Staff.objects.order_by('-id')
+    return render(request, 'all_staffs.html', {'all_staffs': all_staffs})
+
+def all_staff_child_assignments(request):
+    all_staff_child_assignments = StaffChildAssignment.objects.order_by('-id')
+    return render(request, 'all_staff_child_assignments.html', {'all_staff_child_assignments': all_staff_child_assignments})
+
+def all_staff_activity_assignments(request):
+    all_staff_activity_assignments = StaffActivityAssignment.objects.order_by('-id')
+    return render(request, 'all_staff_activity_assignments.html', {'all_staff_activity_assignments': all_staff_activity_assignments})
 
 def staff_add(request):
     if request.method == 'POST':
