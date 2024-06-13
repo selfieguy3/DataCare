@@ -148,10 +148,17 @@ def delete_allergy(request, pk):
 
 
 def parent_list(request):
-    parents = Parent.objects.all()
-    relationships = ParentChildRelationship.objects.all()
+    parents = Parent.objects.all().order_by('-id')[:5]
+    relationships = ParentChildRelationship.objects.all().order_by('-id')[:5]
     return render(request, 'parent_list.html', {'parents': parents, 
                                                 'relationships': relationships})
+def all_parents(request):
+    all_parents = Parent.objects.order_by('-id')
+    return render(request, 'all_parents.html', {'all_parents': all_parents})
+
+def all_child_parents_assignments(request):
+    all_child_parents_assignments = ParentChildRelationship.objects.order_by('-id')
+    return render(request, 'all_child_parents_assignments.html', {'all_child_parents_assignments': all_child_parents_assignments})
 
 def add_parent(request):
     if request.method == 'POST':

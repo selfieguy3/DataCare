@@ -159,6 +159,7 @@
         <div class="section">
             <h2>Parent List</h2>
             <a href="{% url 'add_parent' %}" class="button">Add New Parent</a>
+            <a href="{% url 'all_parents' %}" class="button">View All Parent</a>
             <div class="table-container">
                 <table>
                     <thead>
@@ -206,6 +207,7 @@
         <div class="section">
             <h2>Parent-Child Relationships</h2>
             <a href="{% url 'assign_child' %}" class="button">Assign Children to Parent</a>
+            <a href="{% url 'all_child_parents_assignments' %}" class="button">View All Child-Parent Assignment</a>
             <div class="table-container">
                 <table>
                     <thead>

@@ -94,6 +94,7 @@ urlpatterns = [
     path('staff/all/', views.all_staffs, name='all_staffs'),
     path('staff/child_all/', views.all_staff_child_assignments, name='all_staff_child_assignments'),
     path('staff/activity_all/', views.all_staff_activity_assignments, name='all_staff_activity_assignments'),
-    
+    path('parent/all/', views.all_parents, name='all_parents'),
+    path('parent/child_all/', views.all_child_parents_assignments, name='all_child_parents_assignments'),
 ]
 
