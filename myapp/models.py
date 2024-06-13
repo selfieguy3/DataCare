@@ -78,7 +78,6 @@ class Staff(models.Model):
 class Activity(models.Model):
     activity_name = models.CharField(max_length=50)
     duration = models.DurationField()
-    cost = models.DecimalField(max_digits=10, decimal_places=2)
     age_group = models.CharField(max_length=20)
     description = models.TextField()
 

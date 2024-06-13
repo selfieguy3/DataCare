@@ -126,6 +126,7 @@
         <div class="section">
             <h2>Activity List</h2>
             <a href="{% url 'activity_add' %}" class="button">Add New Activity</a>
+            <a href="{% url 'all_activities' %}" class="button">View All Activities</a>
             <div class="search-bar">
                 <label for="search-activityID">Search by Activity ID, Name, and Date:</label>
                 <form method="GET" action="{% url 'search_activity_details' %}">
@@ -147,7 +148,6 @@
                             <th>Activity ID</th>
                             <th>Activity Name</th>
                             <th>Duration</th>
-                            <th>Cost</th>
                             <th>Age Group</th>
                             <th>Description</th>
                             <th>Actions</th>
@@ -159,7 +159,6 @@
                             <td>{{ activity.id }}</td>
                             <td>{{ activity.activity_name }}</td>
                             <td>{{ activity.duration }}</td>
-                            <td>{{ activity.cost }}</td>
                             <td>{{ activity.age_group }}</td>
                             <td>{{ activity.description }}</td>
                             <td>
@@ -172,28 +171,27 @@
                 </table>
             </div>
         </div>
-        
-        <!-- Search by Date and Duration Section -->
-        <div class="section">
-            <div class="search-bar">
-                <label for="search-activity">Search by Date and Duration:</label>
-                <form method="GET" action="{% url 'search_activity_by_duration' %}">
-                    <input type="date" id="search-date" name="date" placeholder="Date" required>
-                    <select name="duration" required>
-                        <option value="">Select Duration</option>
-                        <option value="less_than_10">Less than 10 minutes</option>
-                        <option value="10_to_30">10 to 30 minutes</option>
-                        <option value="more_than_30">More than 30 minutes</option>
-                    </select>
-                    <button type="submit">Search</button>
-                </form>
-            </div>
-        </div>
 
         <!-- Activity-Child Assignments Section -->
         <div class="section">
             <h2>Activity-Child Assignments</h2>
             <a href="{% url 'assign_activity_child' %}" class="button">Assign Activity to Child</a>
+            <a href="{% url 'all_child_activities' %}" class="button">View All Child Activity Assignments</a>
+            <div class="section">
+                <div class="search-bar">
+                    <label for="search-activity">Search by Date and Duration:</label>
+                    <form method="GET" action="{% url 'search_activity_by_duration' %}">
+                        <input type="date" id="search-date" name="date" placeholder="Date" required>
+                        <select name="duration" required>
+                            <option value="">Select Duration</option>
+                            <option value="less_than_10">Less than 10 minutes</option>
+                            <option value="10_to_30">10 to 30 minutes</option>
+                            <option value="more_than_30">More than 30 minutes</option>
+                        </select>
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
             <div class="table-container">
                 <table>
                     <thead>

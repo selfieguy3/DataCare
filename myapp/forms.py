@@ -40,7 +40,7 @@ class StaffForm(forms.ModelForm):
 class ActivityForm(forms.ModelForm):
     class Meta:
         model = Activity
-        fields = ['activity_name', 'duration', 'cost', 'age_group', 'description']
+        fields = ['activity_name', 'duration', 'age_group', 'description']
 
 class StaffChildAssignmentForm(forms.ModelForm):
     class Meta:

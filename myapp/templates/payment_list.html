@@ -152,6 +152,9 @@
                 <form method="get" action="{% url 'payments_last_30_days' %}">
                     <button class="button" type="submit">View Total Payments Last 30 Days</button>
                 </form>
+                <form method="get" action="{% url 'all_payments' %}" style="display:inline;">
+                    <button class="button" type="submit">View All Past Payments</button>
+                </form>
             </div>
 
             <div class="table-container">
