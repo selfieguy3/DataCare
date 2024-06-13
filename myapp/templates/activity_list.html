@@ -128,7 +128,7 @@
             <a href="{% url 'activity_add' %}" class="button">Add New Activity</a>
             <a href="{% url 'all_activities' %}" class="button">View All Activities</a>
             <div class="search-bar">
-                <label for="search-activityID">Search by Activity ID, Name, and Date:</label>
+                <label for="search-activityID">Search Staff and Children by Activity ID, Name, and Date:</label>
                 <form method="GET" action="{% url 'search_activity_details' %}">
                     <input type="text" id="search-activityID" name="activityID" placeholder="Activity ID">
                     <input type="text" id="search-activityName" name="activityName" placeholder="Activity Name">
@@ -179,7 +179,7 @@
             <a href="{% url 'all_child_activities' %}" class="button">View All Child Activity Assignments</a>
             <div class="section">
                 <div class="search-bar">
-                    <label for="search-activity">Search by Date and Duration:</label>
+                    <label for="search-activity">Search Activities by Date and Duration:</label>
                     <form method="GET" action="{% url 'search_activity_by_duration' %}">
                         <input type="date" id="search-date" name="date" placeholder="Date" required>
                         <select name="duration" required>

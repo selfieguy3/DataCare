@@ -145,3 +145,4 @@ class ActivityExpense(models.Model):
 
     def __str__(self):
         return f"Expense on {self.date} for {self.amount}"
+    

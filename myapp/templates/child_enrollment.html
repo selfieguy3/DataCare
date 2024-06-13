@@ -163,6 +163,7 @@
         <div class="section">
             <h2>Child Information</h2>
             <a href="{% url 'add_child' %}" class="button">Add New Child</a>
+            <a href="{% url 'all_children' %}" class="button">View All Children Information</a>
             <div class="table-container">
                 <table>
                     <thead>
@@ -222,6 +223,8 @@
         <div class="section">
             <h2>Health Records</h2>
             <a href="{% url 'add_health_record' %}" class="button">Add Health Records</a>
+            <a href="{% url 'all_immunizations' %}" class="button">All Immunizations Information</a>
+            <a href="{% url 'all_medical_conditions' %}" class="button">All Medical Conditions</a>
             <div class="table-container">
                 <table>
                     <thead>
@@ -269,6 +272,7 @@
         <div class="section">
             <h2>Emergency Contacts</h2>
             <a href="{% url 'add_emergency_contact' %}" class="button">Add Emergency Contacts</a>
+            <a href="{% url 'all_emergency_contacts' %}" class="button">View all Emergency Contacts</a>
             <div class="table-container">
                 <table>
                     <thead>
@@ -327,6 +331,7 @@
         <div class="section">
             <h2>Allergies</h2>
             <a href="{% url 'add_allergy' %}" class="button">Add Allergies</a>
+            <a href="{% url 'all_allergies' %}" class="button">View All Allergies</a>
             <div class="table-container">
                 <table>
                     <thead>

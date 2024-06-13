@@ -13,7 +13,7 @@ def calculate_age(born):
     return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
 def child_enrollment(request):
-    children = Child.objects.all()
+    children = Child.objects.order_by('-id')[:5] 
     children_with_age = []
     for child in children:
         child_info = {
@@ -28,11 +28,63 @@ def child_enrollment(request):
 
     context = {
         'children': children_with_age, 
-        'health_records': HealthRecord.objects.all(), 
-        'emergency_contacts': EmergencyContact.objects.all(), 
-        'allergies': Allergy.objects.all(), 
+        'health_records': HealthRecord.objects.order_by('-id'), 
+        'emergency_contacts': EmergencyContact.objects.order_by('-id')[:5],
+        'allergies': Allergy.objects.order_by('-id')[:5],
     }
     return render(request, 'child_enrollment.html', context)
+
+def all_children(request):
+    children = Child.objects.order_by('-id')
+    children_with_age = []
+    for child in children:
+        child_info = {
+            'id': child.id,
+            'first_name': child.first_name,
+            'middle_name': child.middle_name,
+            'last_name': child.last_name,
+            'date_of_birth': child.date_of_birth,
+            'age': calculate_age(child.date_of_birth)
+        }
+        children_with_age.append(child_info)
+
+    return render(request, 'all_children.html', {'children': children_with_age})
+
+def all_immunizations(request):
+    health_records = HealthRecord.objects.order_by('-id')
+    immunizations = []
+    for record in health_records:
+        child = record.child
+        immunization_info = {
+            'child_id': child.id,
+            'child_name': f"{child.first_name} {child.middle_name} {child.last_name}",
+            'immunizations': record.immunizations,
+        }
+        immunizations.append(immunization_info)
+
+    return render(request, 'all_immunizations.html', {'immunizations': immunizations})
+
+def all_medical_conditions(request):
+    health_records = HealthRecord.objects.order_by('-id')
+    medical_conditions = []
+    for record in health_records:
+        child = record.child
+        condition_info = {
+            'child_id': child.id,
+            'child_name': f"{child.first_name} {child.middle_name} {child.last_name}",
+            'medical_conditions': record.medical_conditions,
+        }
+        medical_conditions.append(condition_info)
+
+    return render(request, 'all_medical_conditions.html', {'medical_conditions': medical_conditions})
+
+def all_emergency_contacts(request):
+    all_emergency_contacts = EmergencyContact.objects.order_by('-id')
+    return render(request, 'all_emergency_contacts.html', {'all_emergency_contacts': all_emergency_contacts})
+
+def all_allergies(request):
+    all_allergies = Allergy.objects.order_by('-id')
+    return render(request, 'all_allergies.html', {'all_allergies': all_allergies})
 
 def add_child(request):
     if request.method == 'POST':
