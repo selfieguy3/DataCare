@@ -649,16 +649,27 @@ def search_allergy(request):
 
 def search_emergency_id(request):
     emergency_id = request.GET.get('emergency_id')
+    first_name = request.GET.get('first_name')
+    middle_name = request.GET.get('middle_name')
+    last_name = request.GET.get('last_name')
     context = {}
 
-    if emergency_id:
-        emergency_contacts = EmergencyContact.objects.filter(id=emergency_id)
+    if emergency_id and first_name and middle_name and last_name:
+        emergency_contacts = EmergencyContact.objects.filter(
+            id=emergency_id,
+            first_name=first_name,
+            middle_name=middle_name,
+            last_name=last_name
+        )
         children = [contact.child for contact in emergency_contacts]
         context['children'] = children
         if not emergency_contacts:
             context['no_children'] = True
+    else:
+        context['error'] = "Please provide all required fields."
 
     return render(request, 'search_emergency_id_results.html', context)
+
 
 def search_parent(request):
     parent_id = request.GET.get('parentID')

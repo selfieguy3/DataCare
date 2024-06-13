@@ -76,11 +76,14 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: center;
         }
         .search-bar label {
             margin-right: 10px;
             font-weight: bold;
             color: #00796b;
+            width: 100%;
+            text-align: left;
         }
         .search-bar input {
             padding: 10px;
@@ -140,8 +143,8 @@
 
         <!-- Search by ChildID and Date -->
         <div class="section">
+            <label for="search-childID-activities">Search activities and staffs by ChildID</label>
             <div class="search-bar">
-                <label for="search-childID-activities">Search activities and staffs by ChildID</label>
                 <form method="GET" action="{% url 'search_activity' %}">
                     <input type="text" id="search-childID-activities" name="childID" placeholder="Child ID" required>
                     <input type="text" id="search-first-name" name="first_name" placeholder="First Name" required>
@@ -195,8 +198,8 @@
 
         <!-- Search by Vaccines -->
         <div class="section">
+            <label for="search-vaccine">Search Children by Vaccine Name</label>
             <div class="search-bar">
-                <label for="search-vaccine">Search Children by Vaccine Name</label>
                 <form method="GET" action="{% url 'search_vaccine' %}">
                     <input type="text" id="search-vaccine" name="vaccine" placeholder="Vaccine Name" required>
                     <button type="submit">Search</button>
@@ -206,8 +209,8 @@
 
         <!-- Search by Medical Condition -->
         <div class="section">
+            <label for="search-condition">Search Children by Medical Condition</label>
             <div class="search-bar">
-                <label for="search-condition">Search Children by Medical Condition</label>
                 <form method="GET" action="{% url 'search_condition' %}">
                     <input type="text" id="search-condition" name="condition" placeholder="Medical Condition" required>
                     <button type="submit">Search</button>
@@ -250,15 +253,18 @@
 
         <!-- Search by Emergency ID -->
         <div class="section">
+            <label for="search-emergency-id">Search Children by Emergency ID and Name:</label>
             <div class="search-bar">
-                <label for="search-emergency-id">Search Children by Emergency ID</label>
-                <form method="GET" action="{% url 'search_emergency_id' %}">
-                    <input type="text" id="search-emergency-id" name="emergency_id" placeholder="Emergency ID" required>
-                    <button type="submit">Search</button>
+                <form method="get" action="{% url 'search_emergency_id' %}">
+                    <input type="text" id="emergency-id" name="emergency_id" placeholder="Emergency ID" required>
+                    <input type="text" id="first-name" name="first_name" placeholder="First Name" required>
+                    <input type="text" id="middle-name" name="middle_name" placeholder="Middle Name" required>
+                    <input type="text" id="last-name" name="last_name" placeholder="Last Name" required>
+                    <button type="submit" class="button">Search</button>
                 </form>
             </div>
         </div>
-        
+
         <!-- Emergency Contacts Section -->
         <div class="section">
             <h2>Emergency Contacts</h2>
@@ -308,8 +314,8 @@
 
         <!-- Search by Allergy Name -->
         <div class="section">
+            <label for="search-allergy">Search Children by Allergy Name</label>
             <div class="search-bar">
-                <label for="search-allergy">Search Children by Allergy Name</label>
                 <form method="GET" action="{% url 'search_allergy' %}">
                     <input type="text" id="search-allergy" name="allergy" placeholder="Allergy Name" required>
                     <button type="submit">Search</button>
