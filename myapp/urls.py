@@ -96,5 +96,9 @@ urlpatterns = [
     path('staff/activity_all/', views.all_staff_activity_assignments, name='all_staff_activity_assignments'),
     path('parent/all/', views.all_parents, name='all_parents'),
     path('parent/child_all/', views.all_child_parents_assignments, name='all_child_parents_assignments'),
+    path('all_children/', views.all_children, name='all_children'),
+    path('all_immunizations/', views.all_immunizations, name='all_immunizations'),
+    path('all_medical_conditions/', views.all_medical_conditions, name='all_medical_conditions'),
+    path('all_emergency_contacts/', views.all_emergency_contacts, name='all_emergency_contacts'),
+    path('all_allergies/', views.all_allergies, name='all_allergies'),
 ]
-
