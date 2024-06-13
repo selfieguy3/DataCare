@@ -1,11 +1,17 @@
 from django.db import models
+from datetime import date
 
 class Child(models.Model):
-    first_name = models.CharField(max_length=100)
-    middle_name = models.CharField(max_length=100, blank=True, null=True)
-    last_name = models.CharField(max_length=100)
-    age = models.IntegerField()
+    first_name = models.CharField(max_length=30)
+    middle_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30)
     date_of_birth = models.DateField()
+
+    def get_age(self):
+        today = date.today()
+        return today.year - self.date_of_birth.year - (
+            (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day)
+        )
 
     def __str__(self):
         return f"{self.first_name} {self.middle_name} {self.last_name} (ID: {self.id})"

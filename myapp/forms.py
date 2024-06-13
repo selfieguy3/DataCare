@@ -4,7 +4,7 @@ from .models import ActivityExpense, Child, ChildExpense, HealthRecord, Emergenc
 class ChildForm(forms.ModelForm):
     class Meta:
         model = Child
-        fields = ['first_name', 'middle_name', 'last_name', 'age', 'date_of_birth']
+        fields = ['first_name', 'middle_name', 'last_name', 'date_of_birth']
 
 class HealthRecordForm(forms.ModelForm):
     class Meta:

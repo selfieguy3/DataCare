@@ -1,16 +1,33 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q, Sum
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from .forms import ChildForm, HealthRecordForm, EmergencyContactForm, AllergyForm, ParentForm, ParentChildRelationshipForm, StaffForm, ActivityForm, StaffChildAssignmentForm, StaffActivityAssignmentForm, ChildActivityAssignmentForm, AttendanceForm, PaymentForm, OtherExpensesForm, ActivityExpenseForm, ChildExpenseForm
 from .models import ActivityExpense, Child, ChildExpense, HealthRecord, EmergencyContact, Allergy, Parent, ParentChildRelationship, Staff, Activity, StaffChildAssignment, StaffActivityAssignment, ChildActivityAssignment, Attendance, Payment, OtherExpenses, ChildExpense, ActivityExpense
 
 def home(request):
     return render(request, 'home.html')
 
+def calculate_age(born):
+    today = date.today()
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
 def child_enrollment(request):
+    children = Child.objects.all()
+    children_with_age = []
+    for child in children:
+        child_info = {
+            'id': child.id,
+            'first_name': child.first_name,
+            'middle_name': child.middle_name,
+            'last_name': child.last_name,
+            'date_of_birth': child.date_of_birth,
+            'age': calculate_age(child.date_of_birth)
+        }
+        children_with_age.append(child_info)
+
     context = {
-        'children': Child.objects.all(), 
+        'children': children_with_age, 
         'health_records': HealthRecord.objects.all(), 
         'emergency_contacts': EmergencyContact.objects.all(), 
         'allergies': Allergy.objects.all(), 
