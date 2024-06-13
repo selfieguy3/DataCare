@@ -87,6 +87,10 @@ urlpatterns = [
     path('other_expenses/last_7_days/', views.other_expenses_last_7_days, name='other_expenses_last_7_days'),
     path('other_expenses/last_30_days/', views.other_expenses_last_30_days, name='other_expenses_last_30_days'),
     path('other_expenses/all/', views.all_other_expenses, name='all_other_expenses'),
+    path('payments/all/', views.all_payments, name='all_payments'),
+    path('attendance/all/', views.all_attendances, name='all_attendances'),
+    path('activity/all/', views.all_activities, name='all_activities'),
+    path('activity/child_all/', views.all_child_activities, name='all_child_activities'),
 
 ]
 

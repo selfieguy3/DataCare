@@ -119,6 +119,14 @@
             font-size: 16px;
             margin-top: 10px;
         }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .button-group a {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -154,6 +162,7 @@
                 <a href="{% url 'absent_last_7_days' %}" class="button">View Absence Last 7 Days</a>
                 <a href="{% url 'attendance_last_30_days' %}" class="button">View Attendance Last 30 Days</a>
                 <a href="{% url 'absent_last_30_days' %}" class="button">View Absence Last 30 Days</a>
+                <a href="{% url 'all_attendances' %}" class="button">View All Attendance Records</a>
             </div>
         </div>
 

@@ -308,12 +308,20 @@ from django.shortcuts import render
 from .models import Activity, ChildActivityAssignment
 
 def activity_list(request):
-    activities = Activity.objects.all()
-    child_activities_assignments = ChildActivityAssignment.objects.all()
+    activities = Activity.objects.order_by('-id')[:5]  # Order by ID to get the most recently added entries
+    child_activities_assignments = ChildActivityAssignment.objects.order_by('-id')[:5]  # Order by ID to get the most recently added entries
     return render(request, 'activity_list.html', {
         'activities': activities,
         'child_activities_assignments': child_activities_assignments
     })
+
+def all_activities(request):
+    all_activities = Activity.objects.order_by('-id')
+    return render(request, 'all_activities.html', {'all_activities': all_activities})
+
+def all_child_activities(request):
+    all_child_activities_assignments = ChildActivityAssignment.objects.order_by('-id')
+    return render(request, 'all_child_activities.html', {'all_child_activities_assignments': all_child_activities_assignments})
 
 
 def activity_add(request):
@@ -371,8 +379,12 @@ def delete_activity_assignment(request, assignment_id):
     return redirect('activity_list')
 
 def attendance_list(request):
-    attendances = Attendance.objects.all()
+    attendances = Attendance.objects.order_by('-date')[:5]
     return render(request, 'attendance_list.html', {'attendances': attendances})
+
+def all_attendances(request):
+    all_attendances = Attendance.objects.order_by('-date')
+    return render(request, 'all_attendances.html', {'all_attendances': all_attendances})
 
 def add_attendance(request):
     if request.method == 'POST':
@@ -403,14 +415,16 @@ def delete_attendance(request, pk):
     return render(request, 'confirm_delete4.html', {'attendance': attendance})
 
 def payment_list(request):
-    payments = Payment.objects.all()
-    child_expenses = ChildExpense.objects.all()
-    activity_expenses = ActivityExpense.objects.all()
-    other_expenses = OtherExpenses.objects.all()
-    return render(request, 'payment_list.html', {'payments': payments,
-                                                 'child_expenses': child_expenses,
-                                                 'activity_expenses': activity_expenses,
-                                                 'other_expenses': other_expenses})
+    payments = Payment.objects.order_by('-payment_date')[:5]
+    child_expenses = ChildExpense.objects.order_by('-date')[:5]
+    activity_expenses = ActivityExpense.objects.order_by('-date')[:5]
+    other_expenses = OtherExpenses.objects.order_by('-date')[:5]
+    return render(request, 'payment_list.html', {
+        'payments': payments,
+        'child_expenses': child_expenses,
+        'activity_expenses': activity_expenses,
+        'other_expenses': other_expenses
+    })
 
 def add_payment(request):
     if request.method == 'POST':
@@ -1135,3 +1149,7 @@ def all_other_expenses(request):
         'total_amount': total_amount
     }
     return render(request, 'other_expenses_all.html', context)
+
+def all_payments(request):
+    all_payments = Payment.objects.order_by('-payment_date')
+    return render(request, 'all_payments.html', {'all_payments': all_payments})
