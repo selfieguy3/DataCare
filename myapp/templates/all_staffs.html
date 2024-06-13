@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Staff</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0f7fa, #80deea);
+            margin: 0;
+            padding: 0;
+            position: relative;
+            height: 100vh;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 20px;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #80deea;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #e0f7fa;
+            border: 2px solid #80deea;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00796b;
+            font-size: 16px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .button:hover {
+            background-color: #80deea;
+            color: #004d40;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-button">
+            <a href="{% url 'staff_list' %}" class="button">&larr; Back</a>
+        </div>
+        <h1>All Staff</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Staff ID</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                        <th>Phone Number</th>
+                        <th>Street Address</th>
+                        <th>City</th>
+                        <th>Zip Code</th>
+                        <th>State</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff in all_staffs %}
+                    <tr>
+                        <td>{{ staff.id }}</td>
+                        <td>{{ staff.first_name }}</td>
+                        <td>{{ staff.middle_name }}</td>
+                        <td>{{ staff.last_name }}</td>
+                        <td>{{ staff.age }}</td>
+                        <td>{{ staff.phone_number }}</td>
+                        <td>{{ staff.street_address }}</td>
+                        <td>{{ staff.city }}</td>
+                        <td>{{ staff.zip_code }}</td>
+                        <td>{{ staff.state }}</td>
+                        <td>{{ staff.email }}</td>
+                        <td>
+                            <a href="{% url 'staff_edit' staff.pk %}">Edit</a>
+                            <a href="{% url 'staff_delete' staff.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
